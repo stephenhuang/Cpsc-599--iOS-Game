@@ -29,6 +29,8 @@
 		3700C918181AF2880065EA17 /* player2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3700C917181AF2880065EA17 /* player2.png */; };
 		370C6789181C9448008202E3 /* b2.png in Resources */ = {isa = PBXBuildFile; fileRef = 370C6788181C9448008202E3 /* b2.png */; };
 		37970D10181F3CF300B75735 /* dodgeItem.png in Resources */ = {isa = PBXBuildFile; fileRef = 37970D0F181F3CF300B75735 /* dodgeItem.png */; };
+		450A1A7B182047AC00BA5711 /* gameBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 450A1A7A182047AC00BA5711 /* gameBackground.png */; };
+		450A1A7D182049A500BA5711 /* test1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 450A1A7C182049A500BA5711 /* test1.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,8 @@
 		3700C917181AF2880065EA17 /* player2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = player2.png; path = ../player2.png; sourceTree = "<group>"; };
 		370C6788181C9448008202E3 /* b2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b2.png; sourceTree = "<group>"; };
 		37970D0F181F3CF300B75735 /* dodgeItem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dodgeItem.png; sourceTree = "<group>"; };
+		450A1A7A182047AC00BA5711 /* gameBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gameBackground.png; sourceTree = "<group>"; };
+		450A1A7C182049A500BA5711 /* test1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = test1.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +152,8 @@
 		3700C8E0181AED6E0065EA17 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				450A1A7C182049A500BA5711 /* test1.wav */,
+				450A1A7A182047AC00BA5711 /* gameBackground.png */,
 				3700C915181AEEF80065EA17 /* backGround.jpg */,
 				3700C913181AEE900065EA17 /* Untitled.png */,
 				370C6788181C9448008202E3 /* b2.png */,
@@ -256,8 +262,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3700C918181AF2880065EA17 /* player2.png in Resources */,
+				450A1A7D182049A500BA5711 /* test1.wav in Resources */,
 				3700C8E4181AED6E0065EA17 /* InfoPlist.strings in Resources */,
 				37970D10181F3CF300B75735 /* dodgeItem.png in Resources */,
+				450A1A7B182047AC00BA5711 /* gameBackground.png in Resources */,
 				3700C8F7181AED6E0065EA17 /* Images.xcassets in Resources */,
 				3700C8F5181AED6E0065EA17 /* Spaceship.png in Resources */,
 				3700C914181AEE900065EA17 /* Untitled.png in Resources */,

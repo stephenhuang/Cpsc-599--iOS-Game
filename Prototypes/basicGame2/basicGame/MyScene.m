@@ -9,7 +9,7 @@
 #import "MyScene.h"
 #import <AVFoundation/AVFoundation.h>
 
-int p1scoreInt = 0;      //Player 1 score count
+int p1scoreInt = 100;      //Player 1 score count
 
 @interface MyScene ()
 
@@ -26,11 +26,15 @@ SKLabelNode *player1Score;
 
 -(id)initWithSize:(CGSize)size {    
     if (self = [super initWithSize:size]) {
-        SKSpriteNode *background = [SKSpriteNode spriteNodeWithImageNamed:@"b2.png"];
+        SKSpriteNode *background = [SKSpriteNode spriteNodeWithImageNamed:@"gameBackground.png"];
         background.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
         [self addChild:background];
         [self addChild: [self createP1]];
         [self performSelector:@selector(createObjectB) withObject:nil afterDelay:0.0];
+        SKAction* soundAction = [SKAction playSoundFileNamed:@"test1.wav" waitForCompletion:YES];
+        
+        SKAction* soundActionLoop = [SKAction repeatActionForever: soundAction];
+        [self runAction:soundActionLoop];
     }
     
     //SKAction *flyingStart = [SKAction moveByX:600 y:0 duration:40];   //scrolling background
@@ -52,7 +56,7 @@ SKLabelNode *player1Score;
     
     //Player one score
     player1Score = [SKLabelNode labelNodeWithFontNamed:@"player1Score"];
-    player1Score.text = @"Player 1 : 0";
+    player1Score.text = @"Player 1 : 100";
     player1Score.fontSize = 20;
     player1Score.position = CGPointMake(60, 10);
     [self addChild:player1Score];
@@ -101,9 +105,10 @@ SKLabelNode *player1Score;
         if ( [player1 intersectsNode:node])
         {
             NSLog(@"Intersection");
-            [self.synthesizer speakUtterance:[AVSpeechUtterance speechUtteranceWithString:@"Plus 1"]]; //make function for this later
+            //[self.synthesizer speakUtterance:[AVSpeechUtterance speechUtteranceWithString:@"Plus 1"]]; //make function for this later
+            
             [node removeFromParent];      //removing node from parent if collided
-            p1scoreInt++;
+            p1scoreInt--;
             player1Score.text = [NSString stringWithFormat:@"Player 1: %i", p1scoreInt];
             
         }
