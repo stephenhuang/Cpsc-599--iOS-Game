@@ -42,7 +42,7 @@ SKLabelNode *player1Score;
     
     //Speech stuff
     self.synthesizer = [[AVSpeechSynthesizer alloc] init];
-    [self.synthesizer speakUtterance:[AVSpeechUtterance speechUtteranceWithString:@"Prepare to play Faggot"]];
+    [self.synthesizer speakUtterance:[AVSpeechUtterance speechUtteranceWithString:@"Prepare to play"]];
     
     return self;
     
