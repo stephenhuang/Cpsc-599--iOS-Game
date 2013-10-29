@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>1CC5BD43-0966-43D4-88E1-E2FA02874B72</string>
+	<key>IDESourceControlProjectName</key>
+	<string>basicGame</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>75D6E83D-2D05-41DC-831C-4BB640681A3F</key>
+		<string>https://github.com/stephenhuang/Cpsc-599--iOS-Game.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>basicGame.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>75D6E83D-2D05-41DC-831C-4BB640681A3F</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/stephenhuang/Cpsc-599--iOS-Game.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>75D6E83D-2D05-41DC-831C-4BB640681A3F</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>75D6E83D-2D05-41DC-831C-4BB640681A3F</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Cpsc-599--iOS-Game</string>
+		</dict>
+	</array>
+</dict>
+</plist>
