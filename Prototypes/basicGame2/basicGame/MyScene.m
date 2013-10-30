@@ -52,7 +52,9 @@ SKLabelNode *player1Score;
     //Player 1 graphic
     SKSpriteNode *player1 = [SKSpriteNode spriteNodeWithImageNamed:@"player2.png"];
     player1.position = CGPointMake(CGRectGetMidX(self.frame), 75);
+    [player1 runAction:[SKAction scaleBy:.7 duration:.1]];      //Scalling the image because Steve thinks its too big
     player1.name = @"player1";
+    
     
     //Player one score
     player1Score = [SKLabelNode labelNodeWithFontNamed:@"player1Score"];
