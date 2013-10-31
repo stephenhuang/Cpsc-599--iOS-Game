@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		024B5CB71822E9BF00D26329 /* Gameplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 024B5CB61822E9BF00D26329 /* Gameplay.m */; };
 		3700C8D8181AED6E0065EA17 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3700C8D7181AED6E0065EA17 /* Foundation.framework */; };
 		3700C8DA181AED6E0065EA17 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3700C8D9181AED6E0065EA17 /* CoreGraphics.framework */; };
 		3700C8DC181AED6E0065EA17 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3700C8DB181AED6E0065EA17 /* UIKit.framework */; };
@@ -44,6 +45,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		024B5CB51822E9BF00D26329 /* Gameplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gameplay.h; sourceTree = "<group>"; };
+		024B5CB61822E9BF00D26329 /* Gameplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gameplay.m; sourceTree = "<group>"; };
 		3700C8D4181AED6E0065EA17 /* basicGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = basicGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3700C8D7181AED6E0065EA17 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3700C8D9181AED6E0065EA17 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -142,6 +145,8 @@
 				3700C8EF181AED6E0065EA17 /* ViewController.m */,
 				3700C8F1181AED6E0065EA17 /* MyScene.h */,
 				3700C8F2181AED6E0065EA17 /* MyScene.m */,
+				024B5CB51822E9BF00D26329 /* Gameplay.h */,
+				024B5CB61822E9BF00D26329 /* Gameplay.m */,
 				3700C8F4181AED6E0065EA17 /* Spaceship.png */,
 				3700C8F6181AED6E0065EA17 /* Images.xcassets */,
 				3700C8E0181AED6E0065EA17 /* Supporting Files */,
@@ -291,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3700C8F3181AED6E0065EA17 /* MyScene.m in Sources */,
+				024B5CB71822E9BF00D26329 /* Gameplay.m in Sources */,
 				3700C8F0181AED6E0065EA17 /* ViewController.m in Sources */,
 				3700C8EA181AED6E0065EA17 /* AppDelegate.m in Sources */,
 				3700C8E6181AED6E0065EA17 /* main.m in Sources */,

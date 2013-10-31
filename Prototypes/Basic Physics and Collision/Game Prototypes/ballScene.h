@@ -7,8 +7,11 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface ballScene : SKScene
 @property BOOL contentCreated;
+
+@property (nonatomic, strong) AVSpeechSynthesizer *synthesizer;
 
 @end
