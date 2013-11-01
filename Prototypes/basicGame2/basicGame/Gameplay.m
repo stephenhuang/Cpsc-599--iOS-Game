@@ -58,7 +58,12 @@ float boulderCreationDelay;
     
     //Speech stuff
     self.synthesizer = [[AVSpeechSynthesizer alloc] init];
-    [self.synthesizer speakUtterance:[AVSpeechUtterance speechUtteranceWithString:@"Prepare to play Faggot"]];
+    AVSpeechUtterance *utter = [AVSpeechUtterance speechUtteranceWithString:@"Prepare to play, Faggot"];
+    utter.rate = 0.4; // ranges between 0 and 1
+    utter.pitchMultiplier = 2.0;
+
+                               
+    [self.synthesizer speakUtterance:utter];
     
     return self;
     
@@ -146,7 +151,7 @@ float boulderCreationDelay;
     
     //rotating action
     //Picture needs to be fixed so it rotates properly, or the achor point is changed.
-    SKAction *rotateBy360 =[SKAction rotateByAngle:degToRad(-10.0f) duration:0.1];
+    //SKAction *rotateBy360 =[SKAction rotateByAngle:degToRad(-10.0f) duration:0.1];
     //[enemyBoulder runAction:[SKAction repeatActionForever:rotateBy360]];
     
     
@@ -155,6 +160,8 @@ float boulderCreationDelay;
     enemyBoulder.physicsBody.dynamic = YES;
     
     enemyBoulder.physicsBody.affectedByGravity = NO;
+    enemyBoulder.physicsBody.linearDamping = 0.0;
+    enemyBoulder.physicsBody.angularDamping = 0.0;
     //Initial Velocty
     enemyBoulder.physicsBody.velocity = CGVectorMake(0,-boulderVelocity);
     
@@ -178,7 +185,7 @@ float boulderCreationDelay;
         }
         else {
            // node.position = CGPointMake(node.position.x, node.position.y - ranY);
-            node.physicsBody.velocity = CGVectorMake(0,-boulderVelocity);
+           // node.physicsBody.velocity = CGVectorMake(0,-boulderVelocity);
             
         }
         /*
