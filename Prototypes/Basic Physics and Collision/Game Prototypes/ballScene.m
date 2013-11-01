@@ -62,9 +62,6 @@
     [self addChild:label];
     
 
-    
-    
-
     //Creating a ball (which is rectangle right now)
     CGSize ballSize;
     ballSize.width= 100;
