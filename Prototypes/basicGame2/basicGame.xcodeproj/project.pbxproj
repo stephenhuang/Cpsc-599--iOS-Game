@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0238231918238BB90087B226 /* 80bpm_simple_drum.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0238231818238BB90087B226 /* 80bpm_simple_drum.mp3 */; };
+		0238231B182391510087B226 /* 100bpm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0238231A182391510087B226 /* 100bpm.mp3 */; };
 		024B5CB71822E9BF00D26329 /* Gameplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 024B5CB61822E9BF00D26329 /* Gameplay.m */; };
 		3700C8D8181AED6E0065EA17 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3700C8D7181AED6E0065EA17 /* Foundation.framework */; };
 		3700C8DA181AED6E0065EA17 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3700C8D9181AED6E0065EA17 /* CoreGraphics.framework */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		0238231818238BB90087B226 /* 80bpm_simple_drum.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 80bpm_simple_drum.mp3; sourceTree = "<group>"; };
+		0238231A182391510087B226 /* 100bpm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 100bpm.mp3; sourceTree = "<group>"; };
 		024B5CB51822E9BF00D26329 /* Gameplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gameplay.h; sourceTree = "<group>"; };
 		024B5CB61822E9BF00D26329 /* Gameplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gameplay.m; sourceTree = "<group>"; };
 		3700C8D4181AED6E0065EA17 /* basicGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = basicGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -159,6 +161,7 @@
 		3700C8E0181AED6E0065EA17 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0238231A182391510087B226 /* 100bpm.mp3 */,
 				0238231818238BB90087B226 /* 80bpm_simple_drum.mp3 */,
 				450A1A7C182049A500BA5711 /* test1.wav */,
 				450A1A7A182047AC00BA5711 /* gameBackground.png */,
@@ -276,6 +279,7 @@
 				450A1A7B182047AC00BA5711 /* gameBackground.png in Resources */,
 				3700C8F7181AED6E0065EA17 /* Images.xcassets in Resources */,
 				3700C8F5181AED6E0065EA17 /* Spaceship.png in Resources */,
+				0238231B182391510087B226 /* 100bpm.mp3 in Resources */,
 				3700C914181AEE900065EA17 /* Untitled.png in Resources */,
 				370C6789181C9448008202E3 /* b2.png in Resources */,
 				3700C8ED181AED6E0065EA17 /* Main.storyboard in Resources */,
