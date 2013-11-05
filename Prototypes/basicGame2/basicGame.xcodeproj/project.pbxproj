@@ -10,6 +10,7 @@
 		0238231918238BB90087B226 /* 80bpm_simple_drum.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0238231818238BB90087B226 /* 80bpm_simple_drum.mp3 */; };
 		0238231B182391510087B226 /* 100bpm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0238231A182391510087B226 /* 100bpm.mp3 */; };
 		024B5CB71822E9BF00D26329 /* Gameplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 024B5CB61822E9BF00D26329 /* Gameplay.m */; };
+		02FF4B511824E37300BB3757 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 02FF4B501824E37300BB3757 /* Player.m */; };
 		3700C8D8181AED6E0065EA17 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3700C8D7181AED6E0065EA17 /* Foundation.framework */; };
 		3700C8DA181AED6E0065EA17 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3700C8D9181AED6E0065EA17 /* CoreGraphics.framework */; };
 		3700C8DC181AED6E0065EA17 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3700C8DB181AED6E0065EA17 /* UIKit.framework */; };
@@ -51,6 +52,8 @@
 		0238231A182391510087B226 /* 100bpm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 100bpm.mp3; sourceTree = "<group>"; };
 		024B5CB51822E9BF00D26329 /* Gameplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gameplay.h; sourceTree = "<group>"; };
 		024B5CB61822E9BF00D26329 /* Gameplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gameplay.m; sourceTree = "<group>"; };
+		02FF4B4F1824E37300BB3757 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		02FF4B501824E37300BB3757 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		3700C8D4181AED6E0065EA17 /* basicGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = basicGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3700C8D7181AED6E0065EA17 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3700C8D9181AED6E0065EA17 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -151,6 +154,8 @@
 				3700C8F2181AED6E0065EA17 /* MyScene.m */,
 				024B5CB51822E9BF00D26329 /* Gameplay.h */,
 				024B5CB61822E9BF00D26329 /* Gameplay.m */,
+				02FF4B4F1824E37300BB3757 /* Player.h */,
+				02FF4B501824E37300BB3757 /* Player.m */,
 				3700C8F4181AED6E0065EA17 /* Spaceship.png */,
 				3700C8F6181AED6E0065EA17 /* Images.xcassets */,
 				3700C8E0181AED6E0065EA17 /* Supporting Files */,
@@ -307,6 +312,7 @@
 				024B5CB71822E9BF00D26329 /* Gameplay.m in Sources */,
 				3700C8F0181AED6E0065EA17 /* ViewController.m in Sources */,
 				3700C8EA181AED6E0065EA17 /* AppDelegate.m in Sources */,
+				02FF4B511824E37300BB3757 /* Player.m in Sources */,
 				3700C8E6181AED6E0065EA17 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -434,13 +440,14 @@
 		3700C90E181AED6E0065EA17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "basicGame/basicGame-Prefix.pch";
 				INFOPLIST_FILE = "basicGame/basicGame-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPRITEKIT_TEXTURE_ATLAS_OUTPUT = YES;
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -448,13 +455,14 @@
 		3700C90F181AED6E0065EA17 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "basicGame/basicGame-Prefix.pch";
 				INFOPLIST_FILE = "basicGame/basicGame-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPRITEKIT_TEXTURE_ATLAS_OUTPUT = YES;
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

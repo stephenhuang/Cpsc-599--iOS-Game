@@ -7,6 +7,7 @@
 //
 
 #import "Gameplay.h"
+#import "Player.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -17,6 +18,7 @@ int p1scoreInt = 100;      //Player 1 score count
 @property (nonatomic, strong) SKSpriteNode *background;
 @property (nonatomic, strong) SKSpriteNode *selectedNode;
 @property (nonatomic, strong) AVSpeechSynthesizer *synthesizer;
+//@property (nonatomic,strong)
 
 @end
 
@@ -26,6 +28,7 @@ static const uint32_t player1 = 0x1 << 0;
 static const uint32_t enemyNodesCategory   = 0x1 << 1;
 static const uint32_t extra   = 0x1 << 2;
 SKLabelNode *player1Score;
+Player *plyr1;
 float boulderVelocity = 1024.0/(60.0/100.0);
 int bpm = 100;
 float boulderCreationDelay;
@@ -49,6 +52,9 @@ float boulderCreationDelay;
         
         //Beats
         boulderCreationDelay = [self setBoulderCreationDelay];
+        
+        //Players
+        plyr1= [[Player alloc] init:1];
         
         
     }
@@ -96,6 +102,8 @@ float boulderCreationDelay;
     SKAction* soundAction = [SKAction playSoundFileNamed:@"100bpm.mp3" waitForCompletion:YES];
     //Create your first boulder
     [self performSelector:@selector(createObjectB) withObject:nil afterDelay:0.0];
+    [self createPulse];
+    
 
     
     SKAction* soundActionLoop = [SKAction repeatActionForever: soundAction];
@@ -120,6 +128,9 @@ float boulderCreationDelay;
 -(SKSpriteNode *) createP1 {
     //Player 1 graphic
     SKSpriteNode *player1 = [SKSpriteNode spriteNodeWithImageNamed:@"player2.png"];
+    
+    //player1 = [[Player alloc] init:(int*)1];
+    
     player1.position = CGPointMake(CGRectGetMidX(self.frame), 75);
     player1.name = @"player1";
     
@@ -137,6 +148,25 @@ float boulderCreationDelay;
     
     return player1;
     
+}
+-(void)createPulse{
+    
+    CGPoint startPoint = CGPointMake(CGRectGetMinX(self.frame)+100, CGRectGetMidY(self.frame));
+    SKSpriteNode *pulseBoulder = [SKSpriteNode spriteNodeWithImageNamed:@"dodgeItem.png"];
+    pulseBoulder.position = CGPointMake(startPoint.x, startPoint.y);
+    pulseBoulder.name = @"enemyBoulder";
+    pulseBoulder.color = [SKColor colorWithRed:(rand()*2) green:(rand()*2) blue:(rand()*2) alpha:1];
+    [self addChild:pulseBoulder];       //adding to background
+    //PULSE CODE
+    SKAction *delay = [SKAction waitForDuration:(boulderCreationDelay-0.2)];
+    SKAction *grow = [SKAction scaleBy: 1.4 duration:0.1];
+    SKAction *shrink = [SKAction scaleBy:0.7142857  duration:0.1];
+    SKAction *pulse = [SKAction sequence:@[grow, shrink,delay]];
+    //SKAction *pulse = [SKAction sequence:@[grow]];
+    SKAction* pulseLoop = [SKAction repeatActionForever: pulse];
+   
+    [pulseBoulder runAction:pulseLoop];
+
 }
 
 -(void) createObjectB {
