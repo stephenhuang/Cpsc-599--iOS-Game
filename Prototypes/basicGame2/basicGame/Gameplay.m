@@ -112,9 +112,9 @@ float boulderCreationDelay;
     
     
     //Music
-//    SKAction* soundAction = [SKAction playSoundFileNamed:@"100bpm.mp3" waitForCompletion:YES];
-//    SKAction* soundActionLoop = [SKAction repeatActionForever: soundAction];
-//    [self runAction:soundActionLoop];
+    SKAction* soundAction = [SKAction playSoundFileNamed:@"100bpm.mp3" waitForCompletion:YES];
+    SKAction* soundActionLoop = [SKAction repeatActionForever: soundAction];
+    [self runAction:soundActionLoop];
     
     //Enemy Nodes
     [self performSelector:@selector(createEnemyNodes) withObject:nil afterDelay:0.0];
@@ -196,8 +196,8 @@ float boulderCreationDelay;
     float randX = arc4random_uniform(768) + 5;
     CGPoint startPoint = CGPointMake(randX, CGRectGetMaxY(self.frame));
     SKSpriteNode *enemyNode = [SKSpriteNode spriteNodeWithImageNamed:@"dodgeItem.png"];
-//    enemyNode.position = CGPointMake(startPoint.x, startPoint.y);
-    enemyNode.position = CGPointMake(CGRectGetMidX(self.frame), startPoint.y);
+    enemyNode.position = CGPointMake(startPoint.x, startPoint.y);
+    
     enemyNode.name = @"enemyNode";
     enemyNode.color = [SKColor colorWithRed:(rand()*2) green:(rand()*2) blue:(rand()*2) alpha:1];
     enemyNode.colorBlendFactor = .5;
