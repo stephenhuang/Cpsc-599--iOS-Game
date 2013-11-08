@@ -22,5 +22,33 @@
     return self;
 }
 
+- (id)initPlayer:(int)playerNumber withPosition:(CGPoint)startingPosition withImage:(NSString*)imageName
+{
+    self = [super initWithImageNamed:imageName];
+    
+    if (self) {
+        _playerNumber = playerNumber;
+        _startingPosition = startingPosition;
+        _score = 100;
+        _y= 0;
+        self.position = startingPosition;
+        
+        //Add Physics
+        self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:self.size];
+        self.physicsBody.dynamic = NO;
+        self.name = [NSString stringWithFormat:@"player%@",  [NSString stringWithFormat:@"%i", playerNumber]];
+    }
+    return self;
+}
+-(void)decreaseHealth:(int)amount{
+    _score -=amount;
+}
+
+-(void)increaseHealth:(int)amount{
+    _score += amount;
+}
+-(int)getHealth{
+    return _score;
+}
 
 @end

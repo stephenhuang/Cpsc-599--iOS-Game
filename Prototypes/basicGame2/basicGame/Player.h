@@ -13,7 +13,11 @@
 @property int playerNumber;
 @property int score;
 @property float y;
+@property CGPoint startingPosition;
 
-- (id)init:(int)playerNumber;
+- (id)initPlayer:(int)playerNumber withPosition:(CGPoint)startingPosition withImage:(NSString*)imageName;
+- (int)getHealth;
+- (void)decreaseHealth:(int)amount;
+- (void)increaseHealth:(int)amount;
 
 @end
