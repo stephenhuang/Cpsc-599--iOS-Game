@@ -8,6 +8,7 @@
 
 #import "Gameplay.h"
 #import "Player.h"
+#import "PowerNodes.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -31,11 +32,13 @@ static const uint32_t nodes2_clsn   = 0x1 << 3;
 static const uint32_t powerups      = 0x1 << 4;
 
 
+int healthAmount = 0;
 int p1scoreInt = 100;      //Player 1 score count
 SKLabelNode *player1Score;
 SKLabelNode *player2Score;
 Player *player1;
 Player *player2;
+PowerNodes *powerNode;
 float boulderVelocity = 1024.0/(60.0/100.0);
 int bpm = 100;
 float boulderCreationDelay;
@@ -120,6 +123,9 @@ float boulderCreationDelay;
     [self performSelector:@selector(createEnemyNodes) withObject:nil afterDelay:0.0];
     [self createPulse];
     
+    //PowerNodes
+    [self createPowerNodes];
+    
     
 }
 
@@ -149,6 +155,49 @@ float boulderCreationDelay;
     
     [self addToCollisionGroup:player2: @"player2"];
     [self addChild:player2];
+    
+}
+
+-(void) createPowerNodes {
+     NSString *imageName;
+    float randX = arc4random_uniform(768) + 5;
+    float randY = arc4random_uniform(768) + 5;
+    float imageRand = arc4random_uniform(75)+3;
+    if (imageRand < 35) {
+        
+        //if = 1 + 5
+        imageRand = 3;
+        imageName = @"3.png";
+        healthAmount = 5;
+        //if = 0 -5
+        
+    }
+    
+    else {
+        imageRand = 4;
+        imageName = @"4.png";
+        healthAmount = -5;
+    }
+   
+
+
+    powerNode = [[PowerNodes alloc] initPlayer:3
+                                  withPosition:CGPointMake(randX, randY) withImage:imageName];
+    
+    powerNode.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:powerNode.size.width/10];
+    powerNode.physicsBody.dynamic = YES;
+    
+    powerNode.physicsBody.affectedByGravity = NO;
+    powerNode.physicsBody.linearDamping = 0.0;
+    powerNode.physicsBody.angularDamping = 0.0;
+    
+    //Initial Velocty
+    powerNode.physicsBody.velocity = CGVectorMake(0,-1);
+    [self addToCollisionGroup:powerNode: @"powerNode"];
+    [self addChild:powerNode];
+    
+    
+    
     
 }
 -(void) createHuds{
@@ -258,7 +307,7 @@ float boulderCreationDelay;
         Node.physicsBody.collisionBitMask = 0;//player2_clsn;
         Node.physicsBody.contactTestBitMask = player2_clsn;
     }
-    else if ([group isEqualToString:@"powerup"]) {
+    else if ([group isEqualToString:@"powerNode"]) {
         Node.physicsBody.categoryBitMask = powerups;
         Node.physicsBody.collisionBitMask = player1_clsn | player2_clsn;
         Node.physicsBody.contactTestBitMask = player1_clsn | player2_clsn;
@@ -341,6 +390,7 @@ float boulderCreationDelay;
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
     SKPhysicsBody *firstBody, *secondBody;
+    
     //Who hit who?
     if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask){
         firstBody = contact.bodyA;
@@ -365,7 +415,8 @@ float boulderCreationDelay;
     if ((firstBody.categoryBitMask & player1_clsn) !=0 && (secondBody.categoryBitMask & nodes1_clsn) != 0) {
 //        NSLog(@"Intersection %u",(firstBody.categoryBitMask & player1_clsn) );
         //[self.synthesizer speakUtterance:[AVSpeechUtterance speechUtteranceWithString:@"Plus 1"]]; //make function for this later
-        
+        SKAction* soundAction = [SKAction playSoundFileNamed:@"hit1.mp3" waitForCompletion:NO];
+        [self runAction:soundAction];
         [secondBody.node removeFromParent];      //removing node from parent if collided
         [player1 decreaseHealth:1];
         [self updateScore:player1Score: player1.getHealth];
@@ -377,11 +428,32 @@ float boulderCreationDelay;
     {
 //        NSLog(@"Intersection %u",(firstBody.categoryBitMask & player2_clsn));
 //        NSLog(@"Intersection/ %u",(secondBody.categoryBitMask & nodes2_clsn));
+        SKAction* soundAction = [SKAction playSoundFileNamed:@"hit1.mp3" waitForCompletion:NO];
+        [self runAction:soundAction];
         [secondBody.node removeFromParent];      //removing node from parent if collided
+        
         [player2 decreaseHealth:1];
         [self updateScore:player1Score: player2.getHealth];
     }
     
+    
+    
+     if ((secondBody.categoryBitMask & powerups) !=0) {
+         if ((firstBody.categoryBitMask & player1_clsn)!=0){
+             [powerNode removeFromParent];
+             [player1 increaseHealth:healthAmount];
+             [self updateScore:player1Score: player1.getHealth];
+         }
+    
+    
+    
+        if ((firstBody.categoryBitMask & player2_clsn)!=0)                                                                                                                                                                                                                                                                                                              
+        {
+            [powerNode removeFromParent];
+        }
+    
+    }
+
 }
 
 
