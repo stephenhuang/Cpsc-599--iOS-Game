@@ -12,7 +12,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-
+#define backgroundColour = [UIColor colorWithRed:8/255.0f green:9/255.0f blue:236/255.0f alpha:1.0f];
 
 @interface Gameplay () <SKPhysicsContactDelegate>
 
@@ -43,6 +43,8 @@ float boulderVelocity = 1024.0/(60.0/100.0);
 int bpm = 100;
 float boulderCreationDelay;
 
+//Colour constants
+
 
 /*
  
@@ -52,7 +54,7 @@ float boulderCreationDelay;
 
 -(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
-        
+
         //SKAction* soundAction = [SKAction playSoundFileNamed:@"test1.wav" waitForCompletion:YES];
         //SKAction* soundAction = [SKAction playSoundFileNamed:@"80bpm_simple_drum.mp3" waitForCompletion:YES];
         
@@ -100,9 +102,13 @@ float boulderCreationDelay;
 
 - (void)createSceneContents
 {
-
     //Background
-    SKSpriteNode *background = [SKSpriteNode spriteNodeWithImageNamed:@"gameBackground.png"];
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    CGSize screenSize = screenBound.size;
+
+    //SKSpriteNode *background = [SKSpriteNode spriteNodeWithImageNamed:@"gameBackground.png"];
+    SKSpriteNode *background = [SKSpriteNode spriteNodeWithColor:[UIColor colorWithRed:113/255.0f green:209/255.0f blue:236/255.0f alpha:1.0f]
+                                                            size:screenSize];
     background.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
     [self addChild:background];
     //[self addChild: [self createP1]];
@@ -230,7 +236,7 @@ float boulderCreationDelay;
     [self addChild:hud1];
     [self addChild:hud2];
     SKAction *oneRevolution = [SKAction rotateByAngle:-M_PI duration:0];
-    SKAction *move1= [SKAction moveToY:(CGRectGetMidY(self.frame)) duration:0];
+    SKAction *move1= [SKAction moveToY:(CGRectGetMidY(self.frame)+100) duration:0];
     SKAction *move2= [SKAction moveToX:(CGRectGetMaxX(self.frame)+560) duration:0];
     SKAction *test = [SKAction sequence:@[move1, move2,oneRevolution]];
     [hud2 runAction:test];
@@ -244,12 +250,14 @@ float boulderCreationDelay;
 -(void) createEnemyNodes {
     float randX = arc4random_uniform(768) + 5;
     CGPoint startPoint = CGPointMake(randX, CGRectGetMaxY(self.frame));
-    SKSpriteNode *enemyNode = [SKSpriteNode spriteNodeWithImageNamed:@"dodgeItem.png"];
+    SKSpriteNode *enemyNode = [SKSpriteNode spriteNodeWithImageNamed:@"enemyNode2.png"];
+    enemyNode.xScale= 0.1;
+    enemyNode.yScale= 0.1;
     enemyNode.position = CGPointMake(startPoint.x, startPoint.y);
     
     enemyNode.name = @"enemyNode";
-    enemyNode.color = [SKColor colorWithRed:(rand()*2) green:(rand()*2) blue:(rand()*2) alpha:1];
-    enemyNode.colorBlendFactor = .5;
+    //enemyNode.color = [SKColor colorWithRed:(rand()*2) green:(rand()*2) blue:(rand()*2) alpha:1];
+    //enemyNode.colorBlendFactor = .5;
     
     //rotating action
     //Picture needs to be fixed so it rotates properly, or the achor point is changed.

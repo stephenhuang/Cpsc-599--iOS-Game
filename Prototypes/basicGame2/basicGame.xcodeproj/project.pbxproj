@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0237FC3E1837155C002B8EBA /* enemyNode1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0237FC3C1837155C002B8EBA /* enemyNode1.png */; };
+		0237FC3F1837155C002B8EBA /* enemyNode2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0237FC3D1837155C002B8EBA /* enemyNode2.png */; };
 		0238231918238BB90087B226 /* 80bpm_simple_drum.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0238231818238BB90087B226 /* 80bpm_simple_drum.mp3 */; };
 		0238231B182391510087B226 /* 100bpm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0238231A182391510087B226 /* 100bpm.mp3 */; };
 		024B5CB71822E9BF00D26329 /* Gameplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 024B5CB61822E9BF00D26329 /* Gameplay.m */; };
@@ -53,6 +55,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0237FC3C1837155C002B8EBA /* enemyNode1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enemyNode1.png; sourceTree = "<group>"; };
+		0237FC3D1837155C002B8EBA /* enemyNode2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enemyNode2.png; sourceTree = "<group>"; };
 		0238231818238BB90087B226 /* 80bpm_simple_drum.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 80bpm_simple_drum.mp3; sourceTree = "<group>"; };
 		0238231A182391510087B226 /* 100bpm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 100bpm.mp3; sourceTree = "<group>"; };
 		024B5CB51822E9BF00D26329 /* Gameplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gameplay.h; sourceTree = "<group>"; };
@@ -179,6 +183,8 @@
 		3700C8E0181AED6E0065EA17 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0237FC3C1837155C002B8EBA /* enemyNode1.png */,
+				0237FC3D1837155C002B8EBA /* enemyNode2.png */,
 				451CB1EC18302E0B0009E7FE /* 3.png */,
 				451CB1EE18302E150009E7FE /* 4.png */,
 				0238231A182391510087B226 /* 100bpm.mp3 */,
@@ -295,6 +301,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3700C918181AF2880065EA17 /* player2.png in Resources */,
+				0237FC3F1837155C002B8EBA /* enemyNode2.png in Resources */,
 				450A1A7D182049A500BA5711 /* test1.wav in Resources */,
 				3700C8E4181AED6E0065EA17 /* InfoPlist.strings in Resources */,
 				451CB1EF18302E150009E7FE /* 4.png in Resources */,
@@ -304,6 +311,7 @@
 				3700C8F7181AED6E0065EA17 /* Images.xcassets in Resources */,
 				3700C8F5181AED6E0065EA17 /* Spaceship.png in Resources */,
 				0238231B182391510087B226 /* 100bpm.mp3 in Resources */,
+				0237FC3E1837155C002B8EBA /* enemyNode1.png in Resources */,
 				451CB1F1183044DD0009E7FE /* hit.mp3 in Resources */,
 				3700C914181AEE900065EA17 /* Untitled.png in Resources */,
 				370C6789181C9448008202E3 /* b2.png in Resources */,
