@@ -14,6 +14,23 @@
 -(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
         /* Setup your scene here */
+        // Override point for customization after application launch.
+        //GRAND CENTRAL DISPATCH
+        dispatch_group_t group = dispatch_group_create();
+        dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
+        
+        dispatch_group_async(group, queue, ^{
+            //start a background sound
+            NSString *soundFilePath = [[NSBundle mainBundle] pathForResource:@"gamebeatz4real" ofType: @"mp3"];
+            NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:soundFilePath ];
+            myAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:fileURL error:nil];
+            myAudioPlayer.numberOfLoops = -1; //infinite loop
+            
+            //[myAudioPlayer play];
+        });
+        dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+            //Update the state of the scene
+        });
         
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
         
