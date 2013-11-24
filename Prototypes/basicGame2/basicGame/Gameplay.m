@@ -7,8 +7,12 @@
 //
 
 #import "Gameplay.h"
+#import "MyScene.h"
 #import "Player.h"
 #import "PowerNodes.h"
+#import "AppDelegate.h"
+#import "GameTimer.h"
+#import "GameOverScene.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -19,7 +23,11 @@
 @property (nonatomic, strong) SKSpriteNode *background;
 @property (nonatomic, strong) SKSpriteNode *selectedNode;
 @property (nonatomic, strong) AVSpeechSynthesizer *synthesizer;
-//@property (nonatomic,strong)
+@property (nonatomic)         float startTime;
+@property (nonatomic, strong) GameTimer* gameTimer;
+@property (nonatomic)         float stageOfGame;
+@property (nonatomic)         float enemyOpacityRatio; //The rate the opacity changes
+
 
 @end
 
@@ -30,36 +38,56 @@ static const uint32_t player2_clsn  = 0x1 << 1;
 static const uint32_t nodes1_clsn   = 0x1 << 2;
 static const uint32_t nodes2_clsn   = 0x1 << 3;
 static const uint32_t powerups      = 0x1 << 4;
+//May not need
+static const uint32_t nodes1_power  = 0x1 << 5;
+static const uint32_t nodes2_power  = 0x1 << 6;
 
 
-int healthAmount = 0;
-int p1scoreInt = 100;      //Player 1 score count
+
 SKLabelNode *player1Score;
 SKLabelNode *player2Score;
 Player *player1;
 Player *player2;
 PowerNodes *powerNode;
-float boulderVelocity = 1024.0/(60.0/100.0);
-int bpm = 100;
+
+
+int healthAmount = 0;
+//float boulderVelocity = 1024.0/(60.0/100.0);
+float boulderVelocity = 200;
+
+int bpm = 800;
 float boulderCreationDelay;
 
+float imageRand = 0;
 //Colour constants
 
 
 /*
  
- ======================= INITIALIZATION METHODS ===========================
+ ======================= 0. INITIALIZATION METHODS ===========================
  
  */
 
+//MUSIC////////////////////////////////////////
+- (IBAction)stopMusic
+{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    [appDelegate.myAudioPlayer stop];
+    
+}
+
+
+- (IBAction)startMusic
+{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    [appDelegate.myAudioPlayer play];
+}
+//////////////////////////////////////////////
+
+
+
 -(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
-
-        //SKAction* soundAction = [SKAction playSoundFileNamed:@"test1.wav" waitForCompletion:YES];
-        //SKAction* soundAction = [SKAction playSoundFileNamed:@"80bpm_simple_drum.mp3" waitForCompletion:YES];
-        
-        //SKAction* soundActionLoop = [SKAction repeatActionForever: soundAction];
-        //[self runAction:soundActionLoop];
         
         //Physics
         // Set gravity to zero
@@ -67,15 +95,16 @@ float boulderCreationDelay;
         // look for collisions
         self.physicsWorld.contactDelegate = (id)self;
         
+        //GameplayTimer
+        _gameTimer =[[GameTimer alloc] init];
+        
+        //stage
+        _stageOfGame = 1;
+        
         //Music Matching
         boulderCreationDelay = [self setBoulderCreationDelay];
         
-        
-        
     }
-    
-    //SKAction *flyingStart = [SKAction moveByX:600 y:0 duration:40];   //scrolling background
-    //[_background runAction:[SKAction repeatActionForever:flyingStart]];
     
     //Speech stuff
     self.synthesizer = [[AVSpeechSynthesizer alloc] init];
@@ -111,7 +140,6 @@ float boulderCreationDelay;
                                                             size:screenSize];
     background.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
     [self addChild:background];
-    //[self addChild: [self createP1]];
     
     //Players
     [self createPlayers];
@@ -119,14 +147,12 @@ float boulderCreationDelay;
     //Huds
     [self createHuds];
     
-    
     //Music
-    SKAction* soundAction = [SKAction playSoundFileNamed:@"100bpm.mp3" waitForCompletion:YES];
-    SKAction* soundActionLoop = [SKAction repeatActionForever: soundAction];
-    [self runAction:soundActionLoop];
+    [self startMusic];
     
     //Enemy Nodes
-    [self performSelector:@selector(createEnemyNodes) withObject:nil afterDelay:0.0];
+    _enemyOpacityRatio = 1.7;
+    [self performSelector:@selector(createEnemyNodes:) withObject:([NSNumber numberWithInt:1]) afterDelay:0.0];
     [self createPulse];
     
     //PowerNodes
@@ -138,7 +164,7 @@ float boulderCreationDelay;
 
 /*
  
- ======================= CREATION METHODS ===========================
+ ======================= 1. CREATION METHODS ===========================
  
  */
 
@@ -146,9 +172,7 @@ float boulderCreationDelay;
     //Player 1
     player1 = [[Player alloc] initPlayer:1
                             withPosition:CGPointMake(CGRectGetMidX(self.frame), CGRectGetMinY(self.frame)+100)
-                               withImage: @"player2.png"];
-    
-    //SKSpriteNode *player1 = [SKSpriteNode spriteNodeWithImageNamed:@"player2.png"];
+                               withImage: @"playerIcon.png"];
     [self addToCollisionGroup:player1: @"player1"];
     [self addChild:player1];
     
@@ -162,21 +186,124 @@ float boulderCreationDelay;
     [self addToCollisionGroup:player2: @"player2"];
     [self addChild:player2];
     
+    
 }
 
--(void) createPowerNodes {
+-(void) createHuds{
+    UIColor * lineColor = [UIColor colorWithRed:243/255.0f green:256/255.0f blue:255/255.0f alpha:1.0f];
+    SKSpriteNode * middleLine = [SKSpriteNode spriteNodeWithColor:lineColor size:CGSizeMake(CGRectGetMaxX(self.frame), 2)];
+    middleLine.position = CGPointMake(CGRectGetMidX(self.frame),
+                                     CGRectGetMidY(self.frame));
+    middleLine.alpha = 0.5;
+    [self addChild:middleLine];
+    
+    //Hud1
+    SKNode * hud1 = [SKNode node];
+    hud1.name = @"hud1";
+    
+    //Hud2
+    SKNode * hud2 = [SKNode node];
+    hud2.name = @"hud2";
+    
+    //Player one score
+    player1Score = [SKLabelNode labelNodeWithFontNamed:@"player1Score"];
+    player1Score.text = @"Player 1 : 100";
+    player1Score.fontSize = 20;
+    player1Score.position = CGPointMake(CGRectGetMinX(self.frame)+100,
+                                        CGRectGetMidY(self.frame)-100);
+    [hud1 addChild:player1Score];
+    
+    //Player two score
+    player2Score = [SKLabelNode labelNodeWithFontNamed:@"player2Score"];
+    player2Score.text = @"Player 2 : 100";
+    player2Score.fontSize = 20;
+    player2Score.position = CGPointMake(CGRectGetMaxX(self.frame)+100,
+                                        CGRectGetMidY(self.frame)-100);
+    [hud2 addChild:player2Score];
+    
+    [self addChild:hud1];
+    [self addChild:hud2];
+    
+    SKAction *oneRevolution = [SKAction rotateByAngle:-M_PI duration:0];
+    SKAction *move1= [SKAction moveToY:(CGRectGetMidY(self.frame)+500) duration:0];
+    SKAction *move2= [SKAction moveToX:(CGRectGetMaxX(self.frame)+760) duration:0];
+    SKAction *flipHud = [SKAction sequence:@[move1, move2,oneRevolution]];
+    [hud2 runAction:flipHud];
+
+}
+
+
+// -------------
+-(void) createEnemyNodes:(NSNumber*) playerNumber {
+    int playerNum = [playerNumber intValue];
+    SKSpriteNode *enemyNode;
+    CGPoint startPoint;
+    int direction;
+    
+    float randX = arc4random_uniform(768) + 5;
+    
+    
+    //Player specific attributes
+    if (playerNum == 1){
+        enemyNode = [SKSpriteNode spriteNodeWithImageNamed:@"enemyNode1.png"];
+        enemyNode.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:enemyNode.size.width/10];
+        
+        startPoint = CGPointMake(randX, CGRectGetMaxY(self.frame));
+        direction = -1;
+        [self addToCollisionGroup:enemyNode: @"enemyNode1"];
+    }
+    
+    else{
+        enemyNode = [SKSpriteNode spriteNodeWithImageNamed:@"enemyNode2.png"];
+        enemyNode.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:enemyNode.size.width/10];
+        
+        startPoint = CGPointMake(randX, CGRectGetMinY(self.frame));
+        direction = 1;
+        [self addToCollisionGroup:enemyNode: @"enemyNode2"];
+  
+    }
+    
+    //Set Properties
+    enemyNode.xScale= 0.1;
+    enemyNode.yScale= 0.1;
+    enemyNode.name = @"enemyNode";
+    enemyNode.position = CGPointMake(startPoint.x, startPoint.y);
+    enemyNode.alpha = 0.1;
+    
+    //Give the ball some physics
+
+    enemyNode.physicsBody.velocity = CGVectorMake(0,boulderVelocity*direction);
+    enemyNode.physicsBody.dynamic = YES;
+    enemyNode.physicsBody.affectedByGravity = NO;
+    enemyNode.physicsBody.linearDamping = 0.0;
+    enemyNode.physicsBody.angularDamping = 0.0;
+    
+
+    [self addChild:enemyNode];       //adding to background
+    
+    if (playerNum ==1){
+        [self performSelector:@selector(createEnemyNodes:) withObject:[NSNumber numberWithInt:2] afterDelay:0];
+    }
+    else{
+        [self performSelector:@selector(createEnemyNodes:) withObject:[NSNumber numberWithInt:1] afterDelay:boulderCreationDelay];
+    }
+}
+
+
+
+-(void) createPowerNodes{
      NSString *imageName;
     float randX = arc4random_uniform(768) + 5;
     float randY = arc4random_uniform(768) + 5;
-    float imageRand = arc4random_uniform(75)+3;
+    imageRand = arc4random_uniform(75)+3;
+
+    //Selection of PowerUp Type
     if (imageRand < 35) {
-        
         //if = 1 + 5
         imageRand = 3;
         imageName = @"3.png";
         healthAmount = 5;
         //if = 0 -5
-        
     }
     
     else {
@@ -184,8 +311,6 @@ float boulderCreationDelay;
         imageName = @"4.png";
         healthAmount = -5;
     }
-   
-
 
     powerNode = [[PowerNodes alloc] initPlayer:3
                                   withPosition:CGPointMake(randX, randY) withImage:imageName];
@@ -198,97 +323,22 @@ float boulderCreationDelay;
     powerNode.physicsBody.angularDamping = 0.0;
     
     //Initial Velocty
-    powerNode.physicsBody.velocity = CGVectorMake(0,-1);
+    powerNode.physicsBody.velocity = CGVectorMake(0,-100);
     [self addToCollisionGroup:powerNode: @"powerNode"];
     [self addChild:powerNode];
-    
-    
-    
-    
-}
--(void) createHuds{
-    
-    //Hud1
-    SKNode * hud1 = [SKNode node];
-    hud1.name = @"hud1";
-    
-    //Hud2
-    SKNode * hud2 = [SKNode node];
-    hud2.name = @"hud2";
-
-    
-    //Player one score
-    player1Score = [SKLabelNode labelNodeWithFontNamed:@"player1Score"];
-    player1Score.text = @"Player 1 : 100";
-    player1Score.fontSize = 20;
-    player1Score.position = CGPointMake(CGRectGetMinX(self.frame)+100,
-                                        CGRectGetMaxY(self.frame)-100);
-    [hud1 addChild:player1Score];
-    
-    //Player two score
-    player2Score = [SKLabelNode labelNodeWithFontNamed:@"player2Score"];
-    player2Score.text = @"Player 2 : 100";
-    player2Score.fontSize = 20;
-    player2Score.position = CGPointMake(CGRectGetMaxX(self.frame)-100,
-                                        CGRectGetMinY(self.frame)+100);
-    [hud2 addChild:player2Score];
-    
-    [self addChild:hud1];
-    [self addChild:hud2];
-    SKAction *oneRevolution = [SKAction rotateByAngle:-M_PI duration:0];
-    SKAction *move1= [SKAction moveToY:(CGRectGetMidY(self.frame)+100) duration:0];
-    SKAction *move2= [SKAction moveToX:(CGRectGetMaxX(self.frame)+560) duration:0];
-    SKAction *test = [SKAction sequence:@[move1, move2,oneRevolution]];
-    [hud2 runAction:test];
-//    [hud2 runAction:oneRevolution];
- 
-    
-//    [player2Score runAction:oneRevolution];
+    [self performSelector:@selector(createPowerNodes) withObject:nil afterDelay:5];
 }
 
 
--(void) createEnemyNodes {
-    float randX = arc4random_uniform(768) + 5;
-    CGPoint startPoint = CGPointMake(randX, CGRectGetMaxY(self.frame));
-    SKSpriteNode *enemyNode = [SKSpriteNode spriteNodeWithImageNamed:@"enemyNode2.png"];
-    enemyNode.xScale= 0.1;
-    enemyNode.yScale= 0.1;
-    enemyNode.position = CGPointMake(startPoint.x, startPoint.y);
-    
-    enemyNode.name = @"enemyNode";
-    //enemyNode.color = [SKColor colorWithRed:(rand()*2) green:(rand()*2) blue:(rand()*2) alpha:1];
-    //enemyNode.colorBlendFactor = .5;
-    
-    //rotating action
-    //Picture needs to be fixed so it rotates properly, or the achor point is changed.
-    //SKAction *rotateBy360 =[SKAction rotateByAngle:degToRad(-10.0f) duration:0.1];
-    //[enemyNode runAction:[SKAction repeatActionForever:rotateBy360]];
-    
-    
-    //Give the ball some physics
-    enemyNode.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:enemyNode.size.width/10];
-    enemyNode.physicsBody.dynamic = YES;
-    
-    enemyNode.physicsBody.affectedByGravity = NO;
-    enemyNode.physicsBody.linearDamping = 0.0;
-    enemyNode.physicsBody.angularDamping = 0.0;
-    
-    //Initial Velocty
-    enemyNode.physicsBody.velocity = CGVectorMake(0,-boulderVelocity);
-    
-    // collision
-    [self addToCollisionGroup:enemyNode: @"enemyNode1"];
-    
-    [self addChild:enemyNode];       //adding to background
-    
-    [self performSelector:@selector(createEnemyNodes) withObject:nil afterDelay:boulderCreationDelay];
-}
+
+
 
 -(float)setBoulderCreationDelay
 {
     float secPerBeat = 60.0/bpm;
     float timeToTravelScreen =(CGRectGetMaxY(self.frame)/boulderVelocity);
     return (secPerBeat + timeToTravelScreen)/2.0;
+
     
 }
 
@@ -304,15 +354,16 @@ float boulderCreationDelay;
         Node.physicsBody.categoryBitMask = player2_clsn;
         Node.physicsBody.collisionBitMask = 0;//nodes2_clsn;
         Node.physicsBody.contactTestBitMask = nodes2_clsn;
+
     }
     else if ([group isEqualToString:@"enemyNode1"]) {
         Node.physicsBody.categoryBitMask = nodes1_clsn;
-        Node.physicsBody.collisionBitMask = 0;//player1_clsn;
+        Node.physicsBody.collisionBitMask = player1_clsn;
         Node.physicsBody.contactTestBitMask = player1_clsn;
     }
     else if ([group isEqualToString:@"enemyNode2"]) {
         Node.physicsBody.categoryBitMask = nodes2_clsn;
-        Node.physicsBody.collisionBitMask = 0;//player2_clsn;
+        Node.physicsBody.collisionBitMask = player2_clsn;
         Node.physicsBody.contactTestBitMask = player2_clsn;
     }
     else if ([group isEqualToString:@"powerNode"]) {
@@ -320,8 +371,6 @@ float boulderCreationDelay;
         Node.physicsBody.collisionBitMask = player1_clsn | player2_clsn;
         Node.physicsBody.contactTestBitMask = player1_clsn | player2_clsn;
     }
-    
-    
 }
 
 
@@ -376,12 +425,13 @@ float boulderCreationDelay;
 
 /*
  
- ======================= GAMEPLAY METHODS ===========================
+ ======================= 3. GAMEPLAY METHODS ===========================
  
  */
 
 -(void)update:(CFTimeInterval)currentTime {
-    
+   // NSLog(@"time: %f", currentTime);
+
     //Remove nodes out of the screen
     [self enumerateChildNodesWithName:@"enemyNode" usingBlock:^(SKNode *node, BOOL *stop) {
         if (node.position.x < 0 || node.position.y < 0)
@@ -391,9 +441,94 @@ float boulderCreationDelay;
         if (node.position.x > CGRectGetMaxX(self.frame) || (node.position.y > CGRectGetMaxY(self.frame))){
             [node removeFromParent];
         }
+        
+        //Change Node Opacity
+        //Is it node 1?
+        if((node.physicsBody.categoryBitMask & nodes1_clsn) != 0){
+            node.alpha = [self determineNodeOpacity: node.position.y withDirection:-1];
+            
+        }
+        if((node.physicsBody.categoryBitMask & nodes2_clsn) != 0){
+            node.alpha =[self determineNodeOpacity: node.position.y withDirection:1];
+        }
+        
     }];
+    
+    //Determine Game
+    if ([player1 getHealth] <= 0){
+        [self endGame:1];
+    }
+    if ([player2 getHealth] <= 0){
+        [self endGame:2];
+    }
+    
+
+    [self increaseDifficulty];
+
+    
 }
 
+-(void)increaseDifficulty{
+    //Speed up enemy
+    if (_stageOfGame != [_gameTimer getDifficulty]){
+        
+        NSLog(@"\n");
+        NSLog(@"speed: %f ", boulderCreationDelay);
+        NSLog(@"ratio: %f ", _enemyOpacityRatio);
+        NSLog(@"stage: %f ", _stageOfGame);
+        
+        _stageOfGame =[_gameTimer getDifficulty];
+        if (![_gameTimer creationThresholdPassed:_stageOfGame]){
+            float delayIncrease = 1.0/(1.0 - (1.0/_stageOfGame));
+            boulderCreationDelay/=delayIncrease;
+
+        }
+        //Passed the threshold. Time to speed it up
+        else{
+            if (![_gameTimer speedThresholdPassed:_stageOfGame]){
+                NSLog(@"sup");
+                if (_enemyOpacityRatio >0.2){
+                    _enemyOpacityRatio-= 0.05;
+                }
+                boulderVelocity +=60;
+            }
+            //Increase boulder count again
+            else{
+                float delayIncrease = 1.0/(1.0 - (1.0/_stageOfGame));
+                boulderCreationDelay/=delayIncrease;
+                
+            }
+            
+        
+        }
+
+    }
+    
+
+    
+}
+
+-(float)determineNodeOpacity:(float) currentPosition withDirection:(int)direction{
+    float mid = CGRectGetMidY(self.frame);
+    float max = CGRectGetMaxY(self.frame);
+    float crossingPoint =0;
+    if (direction == -1){
+        crossingPoint = max;
+    }
+    else{
+        crossingPoint = 0;
+    }
+    // See if it's in the other players zone
+    if (currentPosition*direction + crossingPoint  < mid ){
+        //determine scaling opacity as a ratio of half of the screen
+        //return 0.1;
+        return(( crossingPoint + currentPosition*direction))/(mid*_enemyOpacityRatio);
+    }
+    else{
+        return 1.0;
+    }
+    
+}
 //Collision Detection
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
@@ -409,59 +544,78 @@ float boulderCreationDelay;
         secondBody = contact.bodyA;
     }
     
-    if ((secondBody.categoryBitMask & nodes1_clsn) != 0){
-        NSLog(@"sup1 %u\n", secondBody.categoryBitMask);
-                NSLog(@"sup1 %u\n", firstBody.categoryBitMask);
-        NSLog(@"sup2 %u", nodes1_clsn);
-        NSLog(@"sup3 %u", nodes2_clsn);
-        NSLog(@"Sup4 %u",secondBody.categoryBitMask & nodes1_clsn);
-        NSLog(@"Sup5 %u",secondBody.categoryBitMask & nodes2_clsn);
+    if ((firstBody.categoryBitMask & player1_clsn) != 0){
+//        NSLog(@"\n\n");
+//        NSLog(@"1st: %u\n", firstBody.categoryBitMask);
+//        NSLog(@"2nd: %u\n", secondBody.categoryBitMask);
+//
+//        NSLog(@"sup2 %u", nodes1_clsn);
+//        NSLog(@"sup3 %u", nodes2_clsn);
+//        NSLog(@"Sup4 %u",secondBody.categoryBitMask & nodes1_clsn);
+//        NSLog(@"Sup5 %u",secondBody.categoryBitMask & nodes2_clsn);
+//        NSLog(@"plyr %u",secondBody.categoryBitMask & player2_clsn);
+//        NSLog(@"plyr %u",firstBody.categoryBitMask & nodes1_clsn);
     }
     
-    
     //Did collide with player1
-    if ((firstBody.categoryBitMask & player1_clsn) !=0 && (secondBody.categoryBitMask & nodes1_clsn) != 0) {
-//        NSLog(@"Intersection %u",(firstBody.categoryBitMask & player1_clsn) );
+    
+    if ((firstBody.categoryBitMask & player1_clsn) != 0){
+     if((secondBody.categoryBitMask & nodes1_clsn) != 0) {
+    
+        //        NSLog(@"Intersection %u",(firstBody.categoryBitMask & player1_clsn) );
         //[self.synthesizer speakUtterance:[AVSpeechUtterance speechUtteranceWithString:@"Plus 1"]]; //make function for this later
         SKAction* soundAction = [SKAction playSoundFileNamed:@"hit1.mp3" waitForCompletion:NO];
         [self runAction:soundAction];
         [secondBody.node removeFromParent];      //removing node from parent if collided
-        [player1 decreaseHealth:1];
+        [player1 decreaseHealth:20];
         [self updateScore:player1Score: player1.getHealth];
-        
+     }
     }
     
     //Did collide with player2
-    if ((firstBody.categoryBitMask & player2_clsn) !=0 && (secondBody.categoryBitMask & nodes2_clsn)!=0)
-    {
-//        NSLog(@"Intersection %u",(firstBody.categoryBitMask & player2_clsn));
-//        NSLog(@"Intersection/ %u",(secondBody.categoryBitMask & nodes2_clsn));
+    if ((firstBody.categoryBitMask & player2_clsn) !=0){
+        if ((secondBody.categoryBitMask & nodes2_clsn)!=0){
+            
         SKAction* soundAction = [SKAction playSoundFileNamed:@"hit1.mp3" waitForCompletion:NO];
         [self runAction:soundAction];
-        [secondBody.node removeFromParent];      //removing node from parent if collided
+        [secondBody.node removeFromParent];
         
-        [player2 decreaseHealth:1];
+        //[player2 decreaseHealth:5];
         [self updateScore:player1Score: player2.getHealth];
+        }
     }
     
     
-    
-     if ((secondBody.categoryBitMask & powerups) !=0) {
-         if ((firstBody.categoryBitMask & player1_clsn)!=0){
-             [powerNode removeFromParent];
-             [player1 increaseHealth:healthAmount];
-             [self updateScore:player1Score: player1.getHealth];
-         }
-    
-    
-    
-        if ((firstBody.categoryBitMask & player2_clsn)!=0)                                                                                                                                                                                                                                                                                                              
+    //Powerups
+    if ((secondBody.categoryBitMask & powerups) !=0) {
+        if ((firstBody.categoryBitMask & player1_clsn)!=0){
+            
+            if (imageRand == 3)
+            {
+                SKAction* powerUpBeat = [SKAction playSoundFileNamed:@"HealthUp.mp3" waitForCompletion:YES];
+                [self runAction:powerUpBeat];
+            }
+            if (imageRand == 4)
+            {
+                SKAction* powerDownBeat = [SKAction playSoundFileNamed:@"HealthDown.mp3" waitForCompletion:YES];
+                [self runAction:powerDownBeat];
+            }
+            
+            
+            [powerNode removeFromParent];
+            [player1 increaseHealth:healthAmount];
+            [self updateScore:player1Score: player1.getHealth];
+        }
+        
+        
+        
+        if ((firstBody.categoryBitMask & player2_clsn)!=0)
         {
             [powerNode removeFromParent];
         }
-    
+        
     }
-
+    
 }
 
 
@@ -512,7 +666,7 @@ float boulderCreationDelay;
 
 /*
  
- ======================= MOVEMENT METHODS ===========================
+ ======================= 4. MOVEMENT METHODS ===========================
  
  */
 
@@ -554,11 +708,24 @@ float degToRad(float degree) {
     //Needs cleaning up, copied code from Rob's Project
 }
 
-- (void)sayThis:(NSString*)text
-{
-    //This method will be used for speechSynthesis.
-    //But I wanna play some CS
-    NSLog(text);
-}
 
+
+/*
+ 
+ ======================= 5. END OF GAME METHODS ===========================
+ 
+ */
+
+-(void)endGame:(int) winningPlayer{
+//    SKScene *gameOverScene = [[GameOverScene alloc] initWithSize:self.size];
+//    SKTransition *doors = [SKTransition doorsOpenHorizontalWithDuration:(0.5)];
+//    [self.view presentScene:gameOverScene transition: doors];
+
+    
+//    SKTransition *reveal = [SKTransition revealWithDirection:SKTransitionDirectionDown duration:1.0];
+//    MyScene *newScene = [[MyScene alloc] initWithSize: CGSizeMake(1024,768)];
+//    //  Optionally, insert code to configure the new scene.
+//    [self.scene.view presentScene: newScene transition: reveal];
+    
+}
 @end

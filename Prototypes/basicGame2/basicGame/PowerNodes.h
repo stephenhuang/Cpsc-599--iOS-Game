@@ -12,7 +12,6 @@
 @interface PowerNodes : SKSpriteNode
 
 @property int powerNumber;
-
 @property float y;
 @property CGPoint startingPosition;
 

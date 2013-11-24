@@ -41,4 +41,26 @@
     return self;
 }
 
+-(void)pickType{
+    NSString *imageName;
+    float randX = arc4random_uniform(768) + 5;
+    float randY = arc4random_uniform(768) + 5;
+    float powerType = arc4random_uniform(75)+3;
+    
+    //Selection of PowerUp Type
+    if (powerType < 35) {
+        //if = 1 + 5
+        powerType = 3;
+        imageName = @"3.png";
+//        healthAmount = 5;
+        //if = 0 -5
+    }
+    
+    else {
+        powerType = 4;
+        imageName = @"4.png";
+//        healthAmount = -5;
+    }
+}
+
 @end

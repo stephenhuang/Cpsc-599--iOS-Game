@@ -33,6 +33,10 @@
         _y= 0;
         self.position = startingPosition;
         
+        self.xScale= 0.3;
+        self.yScale= 0.3;
+
+        
         //Add Physics
         self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:self.size];
         self.physicsBody.dynamic = NO;
