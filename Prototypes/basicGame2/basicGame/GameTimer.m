@@ -16,10 +16,13 @@
         //Setting up timer
         _gameStart= [NSDate date];
         _paused = false;
-        _difficultyInterval = 0.5;
+        _difficultyInterval = 30;
         _difficultyStages = 50;
         _creationThreshold = 20;
         _speedThreshold = 45;
+//        _creationThreshold = 20;
+//        _speedThreshold = 20;
+
         
 
     }

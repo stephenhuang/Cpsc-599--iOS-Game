@@ -10,57 +10,74 @@
 
 @implementation PowerNodes
 
-- (id)init:(int)powerNumber{
-    self = [super init];
-    
+- (id)init{
+    [self pickType];
+    self = [super initWithImageNamed:_powerupIcon];
+//    self = [super init];
+  
     if (self) {
-        _powerNumber = powerNumber;
-        
+     //   [self pickType];
+        [self pickPosition];
         _y= 0;
     }
+
+    self.name = @"powerNode";
+    self.position = _startingPosition;
+    self.xScale = _iconSize;
+    self.yScale = _iconSize;
+
     
+    self.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:self.size.width/10];
+
+    self.physicsBody.dynamic = YES;
+    self.physicsBody.affectedByGravity = NO;
+    self.physicsBody.linearDamping = 0.0;
+    self.physicsBody.angularDamping = 0.0;
+    self.physicsBody.velocity = CGVectorMake(0,-100);
     return self;
 }
 
-- (id)initPlayer:(int)powerNumber withPosition:(CGPoint)startingPosition withImage:(NSString*)imageName
-{
-    self = [super initWithImageNamed:imageName];
-    
-    if (self) {
-        _powerNumber = powerNumber;
-        _startingPosition = startingPosition;
-        
-        _y= 0;
-        self.position = startingPosition;
-        
-        //Add Physics
-        self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:self.size];
-        self.physicsBody.dynamic = NO;
-        self.name = @"powerNode";
-    }
-    return self;
-}
 
--(void)pickType{
-    NSString *imageName;
-    float randX = arc4random_uniform(768) + 5;
-    float randY = arc4random_uniform(768) + 5;
-    float powerType = arc4random_uniform(75)+3;
-    
     //Selection of PowerUp Type
-    if (powerType < 35) {
+-(void)pickType{
+    float selection= arc4random_uniform(75)+3;
+
+    //Health Up
+    if (selection < 35) {
         //if = 1 + 5
-        powerType = 3;
-        imageName = @"3.png";
+        _powerType = @"healthUp";
+        _powerupIcon = @"healthup.png";
+        _iconSize =0.3;
 //        healthAmount = 5;
         //if = 0 -5
     }
-    
-    else {
-        powerType = 4;
-        imageName = @"4.png";
-//        healthAmount = -5;
+    //Health Down
+    else if (selection < 60){
+        _powerType = @"healthDown";
+        _powerupIcon= @"healthdown.png";
+        _iconSize =0.3;
+    }
+    else if (selection < 99){
+        _powerupIcon= @"battle.png";
+        _powerType = @"battle";
+        _iconSize =0.4;
+    }
+    else{
+    //send all node
+        _powerupIcon= @"sendAllNodes.png";
+        _powerType = @"sendAllNodes";
+        _iconSize =0.4;
     }
 }
 
+-(void)pickPosition{
+    float randX = arc4random_uniform(768) + 5;
+    float randY = arc4random_uniform(768) + 5;
+
+    _startingPosition = CGPointMake(randX, randY);
+}
+
+-(NSString*)getPowerType{
+    return _powerType;
+}
 @end
