@@ -11,10 +11,12 @@
 
 @interface PowerNodes : SKSpriteNode
 
-@property int powerNumber;
+@property NSString* powerType;
 @property float y;
 @property CGPoint startingPosition;
-
-- (id)initPlayer:(int)powerNumber withPosition:(CGPoint)startingPosition withImage:(NSString*)imageName;
-
+@property NSString *powerupIcon;
+@property float iconSize;
+-(id)init;
+//- (id)initPlayer:(int)powerNumber withPosition:(CGPoint)startingPosition withImage:(NSString*)imageName;
+-(NSString *)getPowerType;
 @end

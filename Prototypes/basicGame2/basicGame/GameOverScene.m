@@ -7,11 +7,12 @@
 //
 
 #import "GameOverScene.h"
-
+int count =0;
 @implementation GameOverScene
 -(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
         /* Setup your scene here */
+        NSLog(@"initializing");
         
         self.backgroundColor = [UIColor colorWithRed:113/255.0f green:209/255.0f blue:236/255.0f alpha:1.0f];
 
@@ -30,6 +31,8 @@
 
 - (void)didMoveToView:(SKView *)view
 {
-    NSLog(@"@HOORRRAAAAY");
+    NSLog(@"@HOORRRAAAAY %d", count);
+    count++;
+    
 }
 @end
