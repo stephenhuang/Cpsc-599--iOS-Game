@@ -17,7 +17,11 @@
 #import "GameOverScene.h"
 
 @interface Gameplay : SKScene{
+    @public
+    
             AudioManager *AudioPlayer;
+    
+    @private
 }
 @property BOOL contentCreated;
 -(id)initWithSize:(CGSize)size andAudio:(AudioManager*) audio;
