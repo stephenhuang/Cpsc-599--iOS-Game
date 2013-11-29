@@ -22,6 +22,7 @@
 -(id)init;
 
 -(void) playBaseBeat;
+-(void) pauseBaseBeat;
 -(SKAction*)getHealthUpBeat;
 -(SKAction*)gethealthDownBeat;
 -(SKAction *)getPlayerHitBeat;

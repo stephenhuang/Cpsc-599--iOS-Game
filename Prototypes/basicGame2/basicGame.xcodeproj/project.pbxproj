@@ -41,6 +41,18 @@
 		3700C900181AED6E0065EA17 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3700C8DB181AED6E0065EA17 /* UIKit.framework */; };
 		3700C908181AED6E0065EA17 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3700C906181AED6E0065EA17 /* InfoPlist.strings */; };
 		3700C90A181AED6E0065EA17 /* basicGameTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3700C909181AED6E0065EA17 /* basicGameTests.m */; };
+		3750073F184816E8003A63BF /* backgroundMenu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3750073B184816E8003A63BF /* backgroundMenu.png */; };
+		37500740184816E8003A63BF /* backgroundMenu2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3750073C184816E8003A63BF /* backgroundMenu2.png */; };
+		37500741184816E8003A63BF /* backgroundMenu3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3750073D184816E8003A63BF /* backgroundMenu3.png */; };
+		37500742184816E8003A63BF /* backgroundMenu4.png in Resources */ = {isa = PBXBuildFile; fileRef = 3750073E184816E8003A63BF /* backgroundMenu4.png */; };
+		375007451848187A003A63BF /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 375007441848187A003A63BF /* MainMenuViewController.m */; };
+		3785EBD7184571D300639391 /* raleway_thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3785EBD6184571D300639391 /* raleway_thin.otf */; };
+		3785EBDC1845729300639391 /* otherTrivaGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3785EBDA1845729300639391 /* otherTrivaGenerator.m */; };
+		3785EBDD1845729300639391 /* mathTrivaGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3785EBDB1845729300639391 /* mathTrivaGenerator.m */; };
+		3785EBE1184572C900639391 /* BattleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3785EBDF184572C900639391 /* BattleViewController.m */; };
+		3785EBE2184572C900639391 /* BattleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3785EBE0184572C900639391 /* BattleViewController.xib */; };
+		378BC82A1846732A00D09805 /* GameOverMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 378BC8281846732A00D09805 /* GameOverMenuViewController.m */; };
+		378BC82B1846732A00D09805 /* GameOverMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 378BC8291846732A00D09805 /* GameOverMenuViewController.xib */; };
 		37970D10181F3CF300B75735 /* dodgeItem.png in Resources */ = {isa = PBXBuildFile; fileRef = 37970D0F181F3CF300B75735 /* dodgeItem.png */; };
 		450A1A7B182047AC00BA5711 /* gameBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 450A1A7A182047AC00BA5711 /* gameBackground.png */; };
 		450A1A7D182049A500BA5711 /* test1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 450A1A7C182049A500BA5711 /* test1.wav */; };
@@ -105,6 +117,23 @@
 		3700C905181AED6E0065EA17 /* basicGameTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "basicGameTests-Info.plist"; sourceTree = "<group>"; };
 		3700C907181AED6E0065EA17 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3700C909181AED6E0065EA17 /* basicGameTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = basicGameTests.m; sourceTree = "<group>"; };
+		3750073B184816E8003A63BF /* backgroundMenu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backgroundMenu.png; sourceTree = "<group>"; };
+		3750073C184816E8003A63BF /* backgroundMenu2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backgroundMenu2.png; sourceTree = "<group>"; };
+		3750073D184816E8003A63BF /* backgroundMenu3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backgroundMenu3.png; sourceTree = "<group>"; };
+		3750073E184816E8003A63BF /* backgroundMenu4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backgroundMenu4.png; sourceTree = "<group>"; };
+		375007431848187A003A63BF /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuViewController.h; sourceTree = "<group>"; };
+		375007441848187A003A63BF /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuViewController.m; sourceTree = "<group>"; };
+		3785EBD6184571D300639391 /* raleway_thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = raleway_thin.otf; sourceTree = "<group>"; };
+		3785EBD81845725800639391 /* otherTrivaGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = otherTrivaGenerator.h; sourceTree = "<group>"; };
+		3785EBD91845725800639391 /* mathTrivaGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mathTrivaGenerator.h; sourceTree = "<group>"; };
+		3785EBDA1845729300639391 /* otherTrivaGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = otherTrivaGenerator.m; path = ../otherTrivaGenerator.m; sourceTree = "<group>"; };
+		3785EBDB1845729300639391 /* mathTrivaGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = mathTrivaGenerator.m; path = ../mathTrivaGenerator.m; sourceTree = "<group>"; };
+		3785EBDE184572C900639391 /* BattleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BattleViewController.h; sourceTree = "<group>"; };
+		3785EBDF184572C900639391 /* BattleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BattleViewController.m; sourceTree = "<group>"; };
+		3785EBE0184572C900639391 /* BattleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BattleViewController.xib; sourceTree = "<group>"; };
+		378BC8271846732A00D09805 /* GameOverMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverMenuViewController.h; sourceTree = "<group>"; };
+		378BC8281846732A00D09805 /* GameOverMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameOverMenuViewController.m; sourceTree = "<group>"; };
+		378BC8291846732A00D09805 /* GameOverMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GameOverMenuViewController.xib; sourceTree = "<group>"; };
 		37970D0F181F3CF300B75735 /* dodgeItem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dodgeItem.png; sourceTree = "<group>"; };
 		450A1A7A182047AC00BA5711 /* gameBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gameBackground.png; sourceTree = "<group>"; };
 		450A1A7C182049A500BA5711 /* test1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = test1.wav; sourceTree = "<group>"; };
@@ -175,6 +204,7 @@
 		02B8C88918407F080022FD73 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				376147271846F04300C54324 /* Trivia */,
 				02FF4B4F1824E37300BB3757 /* Player.h */,
 				02FF4B501824E37300BB3757 /* Player.m */,
 				451CB1E91830261C0009E7FE /* PowerNodes.h */,
@@ -236,6 +266,7 @@
 		3700C8DF181AED6E0065EA17 /* basicGame */ = {
 			isa = PBXGroup;
 			children = (
+				3750073A184815E9003A63BF /* Menu */,
 				3700C8E8181AED6E0065EA17 /* AppDelegate.h */,
 				3700C8E9181AED6E0065EA17 /* AppDelegate.m */,
 				3700C8EB181AED6E0065EA17 /* Main.storyboard */,
@@ -243,6 +274,9 @@
 				3700C8EF181AED6E0065EA17 /* ViewController.m */,
 				3700C8F1181AED6E0065EA17 /* MyScene.h */,
 				3700C8F2181AED6E0065EA17 /* MyScene.m */,
+				378BC8271846732A00D09805 /* GameOverMenuViewController.h */,
+				378BC8281846732A00D09805 /* GameOverMenuViewController.m */,
+				378BC8291846732A00D09805 /* GameOverMenuViewController.xib */,
 				02B8C88C1840C3550022FD73 /* GameOverScene.h */,
 				02B8C88D1840C3550022FD73 /* GameOverScene.m */,
 				02B53B811843D2F70038A349 /* Audio */,
@@ -257,6 +291,7 @@
 		3700C8E0181AED6E0065EA17 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3785EBD6184571D300639391 /* raleway_thin.otf */,
 				02B8C88B1840C2CD0022FD73 /* Sounds */,
 				02B8C88518406D520022FD73 /* Images */,
 				3700C8E1181AED6E0065EA17 /* basicGame-Info.plist */,
@@ -283,6 +318,33 @@
 				3700C906181AED6E0065EA17 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3750073A184815E9003A63BF /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				3750073B184816E8003A63BF /* backgroundMenu.png */,
+				375007431848187A003A63BF /* MainMenuViewController.h */,
+				375007441848187A003A63BF /* MainMenuViewController.m */,
+				3750073C184816E8003A63BF /* backgroundMenu2.png */,
+				3750073D184816E8003A63BF /* backgroundMenu3.png */,
+				3750073E184816E8003A63BF /* backgroundMenu4.png */,
+			);
+			name = Menu;
+			sourceTree = "<group>";
+		};
+		376147271846F04300C54324 /* Trivia */ = {
+			isa = PBXGroup;
+			children = (
+				3785EBD81845725800639391 /* otherTrivaGenerator.h */,
+				3785EBDA1845729300639391 /* otherTrivaGenerator.m */,
+				3785EBD91845725800639391 /* mathTrivaGenerator.h */,
+				3785EBDB1845729300639391 /* mathTrivaGenerator.m */,
+				3785EBDE184572C900639391 /* BattleViewController.h */,
+				3785EBDF184572C900639391 /* BattleViewController.m */,
+				3785EBE0184572C900639391 /* BattleViewController.xib */,
+			);
+			name = Trivia;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -375,16 +437,23 @@
 				02244A2918400E0300666F30 /* gamebeatz4real.mp3 in Resources */,
 				3700C8F7181AED6E0065EA17 /* Images.xcassets in Resources */,
 				02B53B7E1843CF520038A349 /* healthup.png in Resources */,
+				37500740184816E8003A63BF /* backgroundMenu2.png in Resources */,
+				3785EBE2184572C900639391 /* BattleViewController.xib in Resources */,
 				02244A2D18400E0300666F30 /* randomPowerUp.mp3 in Resources */,
 				02244A2A18400E0300666F30 /* HealthDown.mp3 in Resources */,
 				02B53B7C1843CF520038A349 /* battle.png in Resources */,
 				3700C8F5181AED6E0065EA17 /* Spaceship.png in Resources */,
 				0237FC3E1837155C002B8EBA /* enemyNode1.png in Resources */,
+				378BC82B1846732A00D09805 /* GameOverMenuViewController.xib in Resources */,
+				3785EBD7184571D300639391 /* raleway_thin.otf in Resources */,
 				02244A2B18400E0300666F30 /* HealthUp.mp3 in Resources */,
 				451CB1F1183044DD0009E7FE /* hit.mp3 in Resources */,
 				02B53B7F1843CF520038A349 /* sendAllNodes.png in Resources */,
+				3750073F184816E8003A63BF /* backgroundMenu.png in Resources */,
 				3700C8ED181AED6E0065EA17 /* Main.storyboard in Resources */,
 				451CB1F3183046650009E7FE /* hit1.mp3 in Resources */,
+				37500741184816E8003A63BF /* backgroundMenu3.png in Resources */,
+				37500742184816E8003A63BF /* backgroundMenu4.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +473,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3700C8F3181AED6E0065EA17 /* MyScene.m in Sources */,
+				378BC82A1846732A00D09805 /* GameOverMenuViewController.m in Sources */,
+				3785EBDC1845729300639391 /* otherTrivaGenerator.m in Sources */,
+				3785EBE1184572C900639391 /* BattleViewController.m in Sources */,
+				375007451848187A003A63BF /* MainMenuViewController.m in Sources */,
 				02B8C88E1840C3550022FD73 /* GameOverScene.m in Sources */,
 				02B8C88818407EFD0022FD73 /* GameTimer.m in Sources */,
 				024B5CB71822E9BF00D26329 /* Gameplay.m in Sources */,
@@ -412,6 +485,7 @@
 				02FF4B511824E37300BB3757 /* Player.m in Sources */,
 				451CB1EB1830261C0009E7FE /* PowerNodes.m in Sources */,
 				02B53B841843D3280038A349 /* AudioManager.m in Sources */,
+				3785EBDD1845729300639391 /* mathTrivaGenerator.m in Sources */,
 				3700C8E6181AED6E0065EA17 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
