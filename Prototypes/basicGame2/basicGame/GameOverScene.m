@@ -7,25 +7,39 @@
 //
 
 #import "GameOverScene.h"
+#import "MyScene.h"
+#import "GameOverMenuViewController.h"
+
 int count =0;
+NSString* finalscores;
+GameOverMenuViewController *gameOverMenu;
+
 @implementation GameOverScene
--(id)initWithSize:(CGSize)size {
+-(id)initWithSize:(CGSize)size{
     if (self = [super initWithSize:size]) {
         /* Setup your scene here */
         NSLog(@"initializing");
         
-        self.backgroundColor = [UIColor colorWithRed:113/255.0f green:209/255.0f blue:236/255.0f alpha:1.0f];
+        finalscores = @"";
+        self.backgroundColor =[UIColor blackColor];
+        
+        gameOverMenu = [[GameOverMenuViewController alloc]initWithNibName:@"GameOverMenuViewController" bundle:nil];
+        
+        //[self.view addSubview:gameOverMenu.view];
+        
+        UIWindow* mainWindow = [[UIApplication sharedApplication] keyWindow];
+        [mainWindow addSubview: gameOverMenu.view];
 
-        SKLabelNode *myLabel = [SKLabelNode labelNodeWithFontNamed:@"Helvetica"];
-        
-        myLabel.text = @"GAME OVER!!! YOU LOOOOSE";
-        myLabel.fontSize = 30;
-        myLabel.position = CGPointMake(CGRectGetMidX(self.frame),
-                                       CGRectGetMidY(self.frame));
-        
-        [self addChild:myLabel];
     }
+    //finalscores = [NSString stringWithFormat:@"%i - %i", p1score,p2score];
     return self;
+}
+
+- (void)setScoresForMenu: (int)p1: (int)p2
+{
+    //Remove this later
+    finalscores = [NSString stringWithFormat:@"%i - %i", p1,p2];
+    [gameOverMenu setScoresForMenu:finalscores];
     
 }
 
@@ -34,5 +48,7 @@ int count =0;
     NSLog(@"@HOORRRAAAAY %d", count);
     count++;
     
+   // [self.view presentScene:<#(SKScene *)#>]
 }
+
 @end

@@ -34,6 +34,10 @@
     [myAudioPlayer play];
 }
 
+-(void) pauseBaseBeat{
+    [myAudioPlayer pause];
+}
+
 -(SKAction*)getHealthUpBeat{
     return healthUpBeat;
 }
