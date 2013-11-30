@@ -23,19 +23,14 @@ GameOverMenuViewController *gameOverMenu;
         finalscores = @"";
         self.backgroundColor =[UIColor blackColor];
         
-        gameOverMenu = [[GameOverMenuViewController alloc]initWithNibName:@"GameOverMenuViewController" bundle:nil];
-        
-        //[self.view addSubview:gameOverMenu.view];
-        
-        UIWindow* mainWindow = [[UIApplication sharedApplication] keyWindow];
-        [mainWindow addSubview: gameOverMenu.view];
+
 
     }
     //finalscores = [NSString stringWithFormat:@"%i - %i", p1score,p2score];
     return self;
 }
 
-- (void)setScoresForMenu: (int)p1: (int)p2
+- (void)setScoresForMenuPlayer1:(int)p1 player2:(int)p2
 {
     //Remove this later
     finalscores = [NSString stringWithFormat:@"%i - %i", p1,p2];
@@ -47,6 +42,17 @@ GameOverMenuViewController *gameOverMenu;
 {
     NSLog(@"@HOORRRAAAAY %d", count);
     count++;
+    
+    self.backgroundColor =[UIColor blackColor];
+
+    gameOverMenu = [[GameOverMenuViewController alloc]initWithNibName:@"GameOverMenuViewController" bundle:nil];
+    
+    //[self.view addSubview:gameOverMenu.view];
+    
+    //UIWindow* mainWindow = [[UIApplication sharedApplication] keyWindow];
+    //[mainWindow addSubview: gameOverMenu.view];
+    
+    [view addSubview:gameOverMenu.view];
     
    // [self.view presentScene:<#(SKScene *)#>]
 }

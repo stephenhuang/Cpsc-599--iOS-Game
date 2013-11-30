@@ -46,6 +46,9 @@
 		37500741184816E8003A63BF /* backgroundMenu3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3750073D184816E8003A63BF /* backgroundMenu3.png */; };
 		37500742184816E8003A63BF /* backgroundMenu4.png in Resources */ = {isa = PBXBuildFile; fileRef = 3750073E184816E8003A63BF /* backgroundMenu4.png */; };
 		375007451848187A003A63BF /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 375007441848187A003A63BF /* MainMenuViewController.m */; };
+		37805CC81849433100C44454 /* missle.png in Resources */ = {isa = PBXBuildFile; fileRef = 37805CC51849433100C44454 /* missle.png */; };
+		37805CC91849433100C44454 /* misslePowerUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 37805CC61849433100C44454 /* misslePowerUp.png */; };
+		37805CCA1849433100C44454 /* shootbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = 37805CC71849433100C44454 /* shootbutton.png */; };
 		3785EBD7184571D300639391 /* raleway_thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3785EBD6184571D300639391 /* raleway_thin.otf */; };
 		3785EBDC1845729300639391 /* otherTrivaGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3785EBDA1845729300639391 /* otherTrivaGenerator.m */; };
 		3785EBDD1845729300639391 /* mathTrivaGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3785EBDB1845729300639391 /* mathTrivaGenerator.m */; };
@@ -123,6 +126,9 @@
 		3750073E184816E8003A63BF /* backgroundMenu4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backgroundMenu4.png; sourceTree = "<group>"; };
 		375007431848187A003A63BF /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuViewController.h; sourceTree = "<group>"; };
 		375007441848187A003A63BF /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuViewController.m; sourceTree = "<group>"; };
+		37805CC51849433100C44454 /* missle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = missle.png; sourceTree = "<group>"; };
+		37805CC61849433100C44454 /* misslePowerUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = misslePowerUp.png; sourceTree = "<group>"; };
+		37805CC71849433100C44454 /* shootbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shootbutton.png; sourceTree = "<group>"; };
 		3785EBD6184571D300639391 /* raleway_thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = raleway_thin.otf; sourceTree = "<group>"; };
 		3785EBD81845725800639391 /* otherTrivaGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = otherTrivaGenerator.h; sourceTree = "<group>"; };
 		3785EBD91845725800639391 /* mathTrivaGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mathTrivaGenerator.h; sourceTree = "<group>"; };
@@ -191,6 +197,9 @@
 		02B8C88518406D520022FD73 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				37805CC51849433100C44454 /* missle.png */,
+				37805CC61849433100C44454 /* misslePowerUp.png */,
+				37805CC71849433100C44454 /* shootbutton.png */,
 				02B53B801843CF5E0038A349 /* powerups */,
 				37970D0F181F3CF300B75735 /* dodgeItem.png */,
 				450A1A7A182047AC00BA5711 /* gameBackground.png */,
@@ -432,6 +441,7 @@
 				02244A2C18400E0300666F30 /* powerup.mp3 in Resources */,
 				02B53B7D1843CF520038A349 /* healthdown.png in Resources */,
 				37970D10181F3CF300B75735 /* dodgeItem.png in Resources */,
+				37805CCA1849433100C44454 /* shootbutton.png in Resources */,
 				02B8C88418406D380022FD73 /* playerIcon.png in Resources */,
 				450A1A7B182047AC00BA5711 /* gameBackground.png in Resources */,
 				02244A2918400E0300666F30 /* gamebeatz4real.mp3 in Resources */,
@@ -442,6 +452,7 @@
 				02244A2D18400E0300666F30 /* randomPowerUp.mp3 in Resources */,
 				02244A2A18400E0300666F30 /* HealthDown.mp3 in Resources */,
 				02B53B7C1843CF520038A349 /* battle.png in Resources */,
+				37805CC81849433100C44454 /* missle.png in Resources */,
 				3700C8F5181AED6E0065EA17 /* Spaceship.png in Resources */,
 				0237FC3E1837155C002B8EBA /* enemyNode1.png in Resources */,
 				378BC82B1846732A00D09805 /* GameOverMenuViewController.xib in Resources */,
@@ -454,6 +465,7 @@
 				451CB1F3183046650009E7FE /* hit1.mp3 in Resources */,
 				37500741184816E8003A63BF /* backgroundMenu3.png in Resources */,
 				37500742184816E8003A63BF /* backgroundMenu4.png in Resources */,
+				37805CC91849433100C44454 /* misslePowerUp.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

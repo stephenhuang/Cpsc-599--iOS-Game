@@ -9,7 +9,7 @@
 #import "Gameplay.h"
 #import "GameOverScene.h"
 #import <AVFoundation/AVFoundation.h>
-#import "BattleViewController.h"
+
 
 #define backgroundColour = [UIColor colorWithRed:8/255.0f green:9/255.0f blue:236/255.0f alpha:1.0f];
 
@@ -247,7 +247,7 @@ bool isPaused = false;
 
 // -------------
 -(void) createEnemyNodes:(NSNumber*) playerNumber {
-
+    
     int playerNum = [playerNumber intValue];
     if (!_powerupActive){
     SKSpriteNode *enemyNode;
@@ -298,7 +298,7 @@ bool isPaused = false;
     [self addChild:enemyNode];       //adding to background
     
     }
-    if (!_gameOver){
+    if (!_gameOver && !isPaused){
         if (playerNum ==1){
             [self performSelector:@selector(createEnemyNodes:) withObject:[NSNumber numberWithInt:2] afterDelay:0];
         }
@@ -317,7 +317,7 @@ bool isPaused = false;
 
     [self addToCollisionGroup:powerNode: @"powerNode"];
     [self addChild:powerNode];
-    if (!_gameOver){
+    if (!_gameOver && !isPaused){
         [self performSelector:@selector(createPowerNodes) withObject:nil afterDelay:10];
     }
 }
@@ -332,7 +332,6 @@ bool isPaused = false;
     float timeToTravelScreen =(CGRectGetMaxY(self.frame)/boulderVelocity);
     return (secPerBeat + timeToTravelScreen)/2.0;
 
-    
 }
 
 
@@ -448,14 +447,12 @@ bool isPaused = false;
         
     }];
     
-    
-
     //Determine Game
     if ([player1 getHealth] <= 0){
-        [self endGame:1: player1.getHealth: player2.getHealth];
+        [self endGameWinningPlayer:1 p1score:player1.getHealth p2score:player2.getHealth];
     }
     if ([player2 getHealth] <= 0){
-        [self endGame:2:player1.getHealth: player2.getHealth];
+        [self endGameWinningPlayer:2 p1score:player1.getHealth p2score:player2.getHealth];
     }
     
     if(!isPaused)
@@ -571,7 +568,7 @@ bool isPaused = false;
         if (!_powerupActive){
             [self runAction:[AudioPlayer getPlayerHitBeat]];
             [secondBody.node removeFromParent];      //removing node from parent if collided
-            [player1 decreaseHealth:100];
+            [player1 decreaseHealth:1];
             [self updateScore:player1Score: player1.getHealth];
          }
         else{
@@ -743,13 +740,30 @@ bool isPaused = false;
         //This is a test for the battle menus
         [self pauseGame];
         
+        
+        //[self shootMissile:2];
     }
     
 }
 
+
+-(void)playerThatWins:(int)player
+{
+    if(player==1)
+    {
+        [player1 increaseHealth:5];
+        [player2 decreaseHealth:5];
+    }
+    else
+    {
+        [player2 increaseHealth:5];
+        [player1 decreaseHealth:5];
+    }
+}
+
+
 -(void)pauseGame
 {
-    //Need to pause sound too
     SKView *spriteView = (SKView *) self.view;
     
     if(!spriteView.paused)
@@ -758,9 +772,19 @@ bool isPaused = false;
         spriteView.paused=YES;
         [AudioPlayer pauseBaseBeat];
         
-        //Creating the battle menu
         
+        //SKLabelNode labelNodeWithFontNamed:@"player1Score"];
+        SKEffectNode * effect = [SKEffectNode node];
+        effect.filter =[CIFilter filterWithName:@"CIGaussianBlur"];    //was CIGaussianBlur
+        //effect.shouldEnableEffects = YES;
+
+        //[effect addChild:player1Score];
+        [self addChild:effect];
+        
+       
+        //Creating the battle menu
         _battle = [[BattleViewController alloc]initWithNibName:@"BattleViewController" bundle:nil];
+        _battle.delegate = self;
         //_battle.view.tag =99;
         
         //Old way
@@ -768,7 +792,7 @@ bool isPaused = false;
 //        vc.view.backgroundColor = [UIColor blueColor];
 //        [vc presentViewController:battle animated:YES completion:Nil];  //If we keep it, unpause on completion
     
-        //Looks great, but doesn't work
+        //Animate the view
         _battle.view.alpha = 0.0;
         [self.scene.view addSubview:_battle.view];
         
@@ -780,11 +804,59 @@ bool isPaused = false;
     }
     else
     {
+        //Unpausing
         isPaused=false;
         spriteView.paused=NO;
         [AudioPlayer playBaseBeat];
+        
+        //Creating Other nodes
+        [self createEnemyNodes:[NSNumber numberWithInt:1]];     //Why 1?
+        [self createPowerNodes];
+        
+        //Maybe need to pause the increae in difficultly
     }
-    printf("Done Statements\n");
+}
+
+-(void)shootMissile:(int) player
+{
+    //Setting up missile stuff
+    SKSpriteNode *enemyNode;
+    enemyNode = [SKSpriteNode spriteNodeWithImageNamed:@"missle.png"];
+    enemyNode.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:enemyNode.size.width/10];
+    CGPoint startPoint;
+    enemyNode.physicsBody.dynamic = YES;
+    enemyNode.physicsBody.affectedByGravity = NO;
+    enemyNode.physicsBody.linearDamping = 0.0;
+    enemyNode.physicsBody.angularDamping = 0.0;
+    enemyNode.physicsBody.mass = 1;
+    enemyNode.physicsBody.density = 1;
+    enemyNode.alpha = 0.1;
+    enemyNode.name = @"enemyNode";
+    enemyNode.xScale= 0.15;
+    enemyNode.yScale= 0.15;
+    
+    if(player==1)
+    {
+        startPoint = CGPointMake(player1.position.x, player1.position.y);
+        int direction = 1;
+        [self addToCollisionGroup:enemyNode: @"enemyNode2"];
+    
+        enemyNode.position = CGPointMake(startPoint.x, startPoint.y+100);
+    
+        enemyNode.physicsBody.velocity = CGVectorMake(0,boulderVelocity*direction*1.5);
+    
+    }
+    else
+    {
+        startPoint = CGPointMake(player2.position.x, player2.position.y);
+        int direction = -1;
+        [self addToCollisionGroup:enemyNode: @"enemyNode1"];
+        enemyNode.position = CGPointMake(startPoint.x, startPoint.y-100);
+        
+        enemyNode.physicsBody.velocity = CGVectorMake(0,boulderVelocity*direction*1.5);
+        
+    }
+        [self addChild:enemyNode];
 }
 
 
@@ -847,19 +919,23 @@ float degToRad(float degree) {
  
  */
 
--(void)endGame:(int) winningPlayer:(int) p1score:(int) p2score{
+-(void)endGameWinningPlayer:(int)winningPlayer p1score:(int)p1score p2score:(int)p2score
+// endGameWinningPLayer_p1Score_p2Score(int winningPlayer, int p1
+{
       self.view.paused = YES;
       _gameOver = true;
     
     _gameOverScene = [[GameOverScene alloc] initWithSize:CGSizeMake(CGRectGetMaxX(self.frame), CGRectGetMaxY(self.frame)) ];
     
-    [_gameOverScene setScoresForMenu:player1.getHealth :player2.getHealth];
+    [_gameOverScene setScoresForMenuPlayer1:player1.getHealth player2:player2.getHealth];
+//    [_gameOverScene setScoresForMenu:player1.getHealth :player2.getHealth];
     
    // SKTransition* transitionDoorsCloseVertical =  [SKTransition doorsCloseHorizontalWithDuration:.6];
     //transitionDoorsCloseVertical.pausesOutgoingScene = false;
     
-        doors = [SKTransition doorsOpenHorizontalWithDuration:(2)];
-      [self.view presentScene:_gameOverScene transition:doors];
+      doors = [SKTransition doorsOpenHorizontalWithDuration:(2)];
+      [self.scene.view presentScene:_gameOverScene transition:doors];
+    
     
     //[self.scene removeAllChildren];
     //self.scene = nil;

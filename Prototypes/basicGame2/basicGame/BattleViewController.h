@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol BattleDelegateProtocol
+
+-(void)playerThatWins:(int) player;
+
+@end
+
 @interface BattleViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UILabel *questionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *questionLabel2;
@@ -28,4 +34,9 @@
 
 - (IBAction)p1ButtonPress:(id)sender;
 - (IBAction)p2ButtonPress:(id)sender;
+
+
+//player that wins
+@property id <BattleDelegateProtocol> delegate;
+
 @end

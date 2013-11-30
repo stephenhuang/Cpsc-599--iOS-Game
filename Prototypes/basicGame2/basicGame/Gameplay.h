@@ -15,8 +15,9 @@
 #import "AppDelegate.h"
 #import "GameTimer.h"
 #import "GameOverScene.h"
+#import "BattleViewController.h"
 
-@interface Gameplay : SKScene{
+@interface Gameplay : SKScene <BattleDelegateProtocol>{
     @public
     
             AudioManager *AudioPlayer;

@@ -170,6 +170,7 @@
     questionLabel2.textColor = [UIColor redColor];
     
     [self fadeOutAndRemove];
+    [self.delegate playerThatWins:1];
     }
 
 -(void)p2Wins
@@ -188,7 +189,8 @@
     questionLabel2.textColor = [UIColor greenColor];
     
     [self performSelector:@selector(fadeOutAndRemove) withObject:Nil afterDelay:2];
-    //[self fadeOutAndRemove];
+    [self fadeOutAndRemove];
+    [self.delegate playerThatWins:2];
 }
 
 
