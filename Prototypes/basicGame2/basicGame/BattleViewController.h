@@ -7,8 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
+#import "AudioManager.h"
+
+@protocol BattleDelegateProtocol
+
+-(void)playerThatWins:(int) player;
+
+@end
 
 @interface BattleViewController : UIViewController
+{
+AudioManager *AudioPlayer;
+}
 @property (weak, nonatomic) IBOutlet UILabel *questionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *questionLabel2;
 @property (weak, nonatomic) IBOutlet UILabel *battleLabel2;
@@ -28,4 +39,10 @@
 
 - (IBAction)p1ButtonPress:(id)sender;
 - (IBAction)p2ButtonPress:(id)sender;
+
+
+//player that wins Delegate
+@property id <BattleDelegateProtocol> delegate;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andAudio:(AudioManager*) audio;
+
 @end

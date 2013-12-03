@@ -67,7 +67,7 @@ NSMutableArray* questionNumberUsed;
             [questionWithAnswers addObject:@"Biggie"];   //option 1
             [questionWithAnswers addObject:@"Tupac"];   //option 2
             [questionWithAnswers addObject:@"Eazy-e"]; ;  //option 3
-            [questionWithAnswers addObject:@"Dr.Dre"]; ;  //Answer
+            [questionWithAnswers addObject:@"Dr.Dre"]; ;
             break;
         case 7 :
             [questionWithAnswers addObject:@"Which of the following isn't an Ivy League School"];    //Question

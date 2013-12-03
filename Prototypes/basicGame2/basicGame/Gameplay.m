@@ -6,10 +6,11 @@
 //  Copyright (c) 2013 Robert Siry. All rights reserved.
 //
 
+
 #import "Gameplay.h"
-#import "GameOverScene.h"
 #import <AVFoundation/AVFoundation.h>
-#import "BattleViewController.h"
+#import "MissilePowerUp.h"
+
 
 #define backgroundColour = [UIColor colorWithRed:8/255.0f green:9/255.0f blue:236/255.0f alpha:1.0f];
 
@@ -30,8 +31,10 @@
 
 @implementation Gameplay
 {
+    GameOverMenuViewController * _gameOverMenu;
     BattleViewController * _battle;
- 
+    GameOverScene *_gameOverScene;
+    SKTransition *doors;
     NSMapTable * _touchToNodeLookup;
 }
 
@@ -50,6 +53,8 @@ SKLabelNode *player1Score;
 SKLabelNode *player2Score;
 Player *player1;
 Player *player2;
+MissilePowerUp * p1Missile;
+MissilePowerUp * p2Missile;
 //PowerNodes *powerNode;
 
 
@@ -124,7 +129,7 @@ bool isPaused = false;
     utter.pitchMultiplier = 2.0;
     
     
-    //[self.synthesizer speakUtterance:utter];
+    [self.synthesizer speakUtterance:utter];
     
     return self;
     
@@ -154,7 +159,10 @@ bool isPaused = false;
     
     //Players
     [self createPlayers];
-    
+    p1Missile = [MissilePowerUp alloc];
+    p2Missile = [MissilePowerUp alloc];
+    [p1Missile setToZero];
+    [p2Missile setToZero];
     
     //Huds
     [self createHuds];
@@ -169,7 +177,6 @@ bool isPaused = false;
     
     //PowerNodes
     [self createPowerNodes];
-    
     
     
 }
@@ -248,7 +255,7 @@ bool isPaused = false;
 
 // -------------
 -(void) createEnemyNodes:(NSNumber*) playerNumber {
-
+    
     int playerNum = [playerNumber intValue];
     if (!_powerupActive){
     SKSpriteNode *enemyNode;
@@ -257,7 +264,7 @@ bool isPaused = false;
     
     float randX = arc4random_uniform(768) + 5;
     
-    
+        //printf("Creating E-Node\n");
     //Player specific attributes
     if (playerNum == 1){
         enemyNode = [SKSpriteNode spriteNodeWithImageNamed:@"enemyNode1.png"];
@@ -299,7 +306,7 @@ bool isPaused = false;
     [self addChild:enemyNode];       //adding to background
     
     }
-    if (!_gameOver){
+    if (!_gameOver && !isPaused){
         if (playerNum ==1){
             [self performSelector:@selector(createEnemyNodes:) withObject:[NSNumber numberWithInt:2] afterDelay:0];
         }
@@ -318,7 +325,7 @@ bool isPaused = false;
 
     [self addToCollisionGroup:powerNode: @"powerNode"];
     [self addChild:powerNode];
-    if (!_gameOver){
+    if (!_gameOver && !isPaused){
         [self performSelector:@selector(createPowerNodes) withObject:nil afterDelay:10];
     }
 }
@@ -333,7 +340,6 @@ bool isPaused = false;
     float timeToTravelScreen =(CGRectGetMaxY(self.frame)/boulderVelocity);
     return (secPerBeat + timeToTravelScreen)/2.0;
 
-    
 }
 
 
@@ -449,14 +455,12 @@ bool isPaused = false;
         
     }];
     
-    
-
     //Determine Game
     if ([player1 getHealth] <= 0){
-        [self endGame:1: player1.getHealth: player2.getHealth];
+        [self endGameWinningPlayer:1 p1score:player1.getHealth p2score:player2.getHealth];
     }
     if ([player2 getHealth] <= 0){
-        [self endGame:2:player1.getHealth: player2.getHealth];
+        [self endGameWinningPlayer:2 p1score:player1.getHealth p2score:player2.getHealth];
     }
     
     if(!isPaused)
@@ -466,7 +470,6 @@ bool isPaused = false;
     else
         printf("Paused");
 
-    
 }
 
 -(void)increaseDifficulty{
@@ -573,7 +576,7 @@ bool isPaused = false;
         if (!_powerupActive){
             [self runAction:[AudioPlayer getPlayerHitBeat]];
             [secondBody.node removeFromParent];      //removing node from parent if collided
-            [player1 decreaseHealth:50];
+            [player1 decreaseHealth:50];   //Robert
             [self updateScore:player1Score: player1.getHealth];
          }
         else{
@@ -590,7 +593,7 @@ bool isPaused = false;
         [secondBody.node removeFromParent];
         
         //[player2 decreaseHealth:5];
-        [self updateScore:player1Score: player2.getHealth];
+        [self updateScore:player2Score: player2.getHealth];
         }
      }
     
@@ -607,7 +610,8 @@ bool isPaused = false;
 -(void)powerupCollision: (SKPhysicsBody* ) firstBody withBody: (SKPhysicsBody*) secondBody{
     PowerNodes * powerNode = (PowerNodes *) secondBody.node;
     NSString * powerType = [powerNode getPowerType];
-
+    
+    NSString *test = firstBody.node.name;
     //Determine powerup type
     if ([powerType isEqualToString:@"healthUp"])
     {
@@ -615,8 +619,23 @@ bool isPaused = false;
     }
     else if ([powerType isEqualToString:@"healthDown"])
     {
-     
         [self runAction:[AudioPlayer gethealthDownBeat]];
+    }
+    else if ([powerType isEqualToString:@"battle"])
+    {
+        [self pauseGame];
+        [self createBattle];
+    }
+    else if ([powerType isEqualToString:@"missle"])
+    {
+        //Needs new sound
+        [self runAction:[AudioPlayer getHealthUpBeat]];
+        
+        if([firstBody.node.name  isEqual:@"player1"])
+            [p1Missile addMissiles:self.scene forPlayer:1];
+        
+        if([firstBody.node.name  isEqual:@"player2"])
+            [p2Missile addMissiles:self.scene forPlayer:2];
     }
 
     
@@ -694,25 +713,21 @@ bool isPaused = false;
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    for( UITouch * touch in touches )
+    for (UITouch *touch in touches)
     {
-//        UITouch *touch = [touches anyObject];
-        CGPoint positionInScene = [touch locationInNode:self];
-
+    CGPoint positionInScene = [touch locationInNode:self];
         [self selectNodeForTouch:positionInScene touch:touch];
-        
     }
 }
 
-//implement touchesEnd, and remove from dictionary _touchNodeLookup
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     for (UITouch * touch in touches)
     {
         [_touchToNodeLookup removeObjectForKey:(touch)];
     }
 }
+
 - (void)selectNodeForTouch:(CGPoint)touchLocation touch:(UITouch*)touch
 {
     //1
@@ -723,8 +738,8 @@ bool isPaused = false;
     if([touchedNode.name isEqualToString:@"player1"] ||
        [touchedNode.name isEqualToString:@"player2"])
     {
-		[touchedNode removeAllActions];
-		[touchedNode runAction:[SKAction rotateToAngle:0.0f duration:0.1]];
+        [touchedNode removeAllActions];
+        [touchedNode runAction:[SKAction rotateToAngle:0.0f duration:0.1]];
         
         [_touchToNodeLookup setObject:touchedNode forKey:touch];
     }
@@ -745,83 +760,144 @@ bool isPaused = false;
         [_selectedNode runAction:[SKAction repeatActionForever:sequence]];
         //[_selectedNode runAction:[SKAction repeatActionForever:[SKAction rotateByAngle:degToRad(-10.0f) duration:0.1]]];
     }
-    if([[touchedNode name] isEqualToString:@"enemyNode"]) {
-        //This is a test for the battle menus
-        [self pauseGame];
+    if([[touchedNode name] isEqualToString:@"P1ShootButton"]) {
+        if([p1Missile hasMissiles])
+        {
+            [p1Missile shotMissle];
+            [self shootMissile:1];
+            
+            if(![p1Missile hasMissiles])
+                [p1Missile removeMissileHud];
+        }
+        
+    }
+    if([[touchedNode name] isEqualToString:@"P2ShootButton"]) {
+        if([p2Missile hasMissiles])
+        {
+            [p2Missile shotMissle];
+            [self shootMissile:2];
+            
+            if(![p2Missile hasMissiles])
+                [p2Missile removeMissileHud];
+        }
         
     }
     
+}
+
+
+-(void)playerThatWins:(int)player
+{
+    //This if used when a player battle is over
+    if(player==1)
+    {
+        [player1 increaseHealth:5];
+        [player2 decreaseHealth:5];
+        [self updateScore:player1Score: player1.getHealth];
+        [self updateScore:player2Score: player2.getHealth];
+    }
+    else
+    {
+        [player2 increaseHealth:5];
+        [player1 decreaseHealth:5];
+        [self updateScore:player1Score: player1.getHealth];
+        [self updateScore:player2Score: player2.getHealth];
+    }
+    [self pauseGame];   //Will figure out if paused or unpaused and act accordingly
+}
+
+
+-(void)createBattle
+{
+    //Creating the battle menu
+    _battle = [[BattleViewController alloc]initWithNibName:@"BattleViewController" bundle:nil andAudio:AudioPlayer];
+    _battle.delegate = self;
     
-    //2
-//	if(![_selectedNode isEqual:touchedNode]) {
-//		[_selectedNode removeAllActions];
-//		[_selectedNode runAction:[SKAction rotateToAngle:0.0f duration:0.1]];
-//        
-//		_selectedNode = touchedNode;
-//		//3
-//		if([[touchedNode name] isEqualToString:@"player1"]) {
-//			SKAction *sequence = [SKAction sequence:@[[SKAction rotateByAngle:degToRad(-8.0f) duration:0.1],
-//													  [SKAction rotateByAngle:0.0 duration:0.1],
-//													  [SKAction rotateByAngle:degToRad(8.0f) duration:0.1]]];
-//			[_selectedNode runAction:[SKAction repeatActionForever:sequence]];
-//            //[_selectedNode runAction:[SKAction repeatActionForever:[SKAction rotateByAngle:degToRad(-10.0f) duration:0.1]]];
-//            
-//		}
-//        if([[touchedNode name] isEqualToString:@"player2"]) {
-//			SKAction *sequence = [SKAction sequence:@[[SKAction rotateByAngle:degToRad(-8.0f) duration:0.1],
-//													  [SKAction rotateByAngle:0.0 duration:0.1],
-//												  [SKAction rotateByAngle:degToRad(8.0f) duration:0.1]]];
-//			[_selectedNode runAction:[SKAction repeatActionForever:sequence]];
-//            //[_selectedNode runAction:[SKAction repeatActionForever:[SKAction rotateByAngle:degToRad(-10.0f) duration:0.1]]];
-//		}
-//         if([[touchedNode name] isEqualToString:@"enemyNode"]) {
-//             //This is a test for the battle menus
-//             [self pauseGame];
-//             
-//         }
-//    }
-	
+    //Animate the view
+    _battle.view.alpha = 0.0;
+    [self.scene.view addSubview:_battle.view];
+    
+    [UIView animateWithDuration:1.0 animations:^{
+        
+        _battle.view.alpha = 1.0;
+        
+    }];
     
 }
 
 -(void)pauseGame
 {
-    //Need to pause sound too
     SKView *spriteView = (SKView *) self.view;
     
     if(!spriteView.paused)
     {
         isPaused=true;
         spriteView.paused=YES;
-        [AudioPlayer pauseBaseBeat];
         
-        //Creating the battle menu
         
-        _battle = [[BattleViewController alloc]initWithNibName:@"BattleViewController" bundle:nil];
-        _battle.view.tag =99;
-        
-        //Works, but looks bad
-        UIViewController *vc = self.view.window.rootViewController;
-        vc.view.backgroundColor = [UIColor blueColor];
-        //[vc presentViewController:battle animated:YES completion:Nil];  //If we keep it, unpause on completion
+        //SKLabelNode labelNodeWithFontNamed:@"player1Score"];
+        SKEffectNode * effect = [SKEffectNode node];
+        effect.filter =[CIFilter filterWithName:@"CIGaussianBlur"];    //was CIGaussianBlur
+        //effect.shouldEnableEffects = YES;
+
+        //[effect addChild:player1Score];
+        //[self addChild:effect];
     
-        //Looks great, but doesn't work
-        //Will see Tim about this
-        _battle.view.alpha = 0.0;
-        [self.scene.view addSubview:_battle.view];
-        
-        [UIView animateWithDuration:1.0 animations:^{
-        
-        _battle.view.alpha = 1.0;
-        
-        }];
     }
     else
     {
+        //Unpausing
         isPaused=false;
         spriteView.paused=NO;
-        [AudioPlayer playBaseBeat];
+        
+        
+        //Creating Other nodes
+        [self createEnemyNodes:[NSNumber numberWithInt:1]];     //Why 1?
+        [self createPowerNodes];
+        
     }
+}
+
+-(void)shootMissile:(int) player
+{
+    //Setting up missile stuff
+    SKSpriteNode *enemyNode;
+    enemyNode = [SKSpriteNode spriteNodeWithImageNamed:@"missle.png"];
+    enemyNode.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:enemyNode.size.width/10];
+    CGPoint startPoint;
+    enemyNode.physicsBody.dynamic = YES;
+    enemyNode.physicsBody.affectedByGravity = NO;
+    enemyNode.physicsBody.linearDamping = 0.0;
+    enemyNode.physicsBody.angularDamping = 0.0;
+    enemyNode.physicsBody.mass = 1;
+    enemyNode.physicsBody.density = 1;
+    enemyNode.alpha = 0.1;
+    enemyNode.name = @"enemyNode";
+    enemyNode.xScale= 0.15;
+    enemyNode.yScale= 0.15;
+    
+    if(player==1)
+    {
+        startPoint = CGPointMake(player1.position.x, player1.position.y);
+        int direction = 1;
+        [self addToCollisionGroup:enemyNode: @"enemyNode2"];
+    
+        enemyNode.position = CGPointMake(startPoint.x, startPoint.y+100);
+    
+        enemyNode.physicsBody.velocity = CGVectorMake(0,boulderVelocity*direction*1.5);
+    
+    }
+    else
+    {
+        startPoint = CGPointMake(player2.position.x, player2.position.y);
+        int direction = -1;
+        [self addToCollisionGroup:enemyNode: @"enemyNode1"];
+        enemyNode.position = CGPointMake(startPoint.x, startPoint.y-100);
+        enemyNode.zRotation = M_PI;
+        enemyNode.physicsBody.velocity = CGVectorMake(0,boulderVelocity*direction*1.5);
+        
+    }
+        [self addChild:enemyNode];
 }
 
 
@@ -846,32 +922,27 @@ float degToRad(float degree) {
 
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-//	UITouch *touch = [touches anyObject];
-    
-    for( UITouch * touch in touches )
+	for (UITouch *touch in touches)
     {
-     	CGPoint positionInScene = [touch locationInNode:self];
+        CGPoint positionInScene = [touch locationInNode:self];
         CGPoint previousPosition = [touch previousLocationInNode:self];
-        
+    
         CGPoint translation = CGPointMake(positionInScene.x - previousPosition.x, positionInScene.y - previousPosition.y);
-
+    
         [self panForTranslation:translation touch:touch];
     }
 }
 
 - (void)panForTranslation:(CGPoint)translation touch:(UITouch*)touch {
+    SKNode * selectedNode = [_touchToNodeLookup objectForKey:touch];
+    CGPoint position = [selectedNode position];
     //Change to incorporate 2nd player
     
-    SKNode * selectedNode = [_touchToNodeLookup objectForKey:touch];
-
-    CGPoint position = [selectedNode position];
-
     if([[selectedNode name] isEqualToString:@"player1"]) {
         [selectedNode setPosition:CGPointMake(position.x + translation.x, position.y + translation.y)];
     }
     if([[selectedNode name] isEqualToString:@"player2"]) {
-        [selectedNode
-         setPosition:CGPointMake(position.x + translation.x, position.y + translation.y)];
+        [selectedNode setPosition:CGPointMake(position.x + translation.x, position.y + translation.y)];
     }
     else {
         CGPoint newPos = CGPointMake(position.x + translation.x, position.y + translation.y);
@@ -889,25 +960,87 @@ float degToRad(float degree) {
  
  */
 
--(void)endGame:(int) winningPlayer:(int) p1score:(int) p2score{
-      self.view.paused = YES;
+-(void)endGameWinningPlayer:(int)winningPlayer p1score:(int)p1score p2score:(int)p2score
+// endGameWinningPLayer_p1Score_p2Score(int winningPlayer, int p1
+{
+    //self.view.paused = YES;
       _gameOver = true;
-    
-     GameOverScene *gameOverScene = [[GameOverScene alloc] initWithSize:CGSizeMake(CGRectGetMaxX(self.frame), CGRectGetMaxY(self.frame))];
 
-   // SKTransition* transitionDoorsCloseVertical =  [SKTransition doorsCloseHorizontalWithDuration:.6];
-    //transitionDoorsCloseVertical.pausesOutgoingScene = false;
+    [AudioPlayer volumeFade];
+    [self runAction:[AudioPlayer getloseBeat]];
+    [AudioPlayer stopBaseBeat];
     
-      SKTransition *doors = [SKTransition doorsOpenHorizontalWithDuration:(0.5)];
-      [self.scene.view presentScene:gameOverScene transition:doors];
+    if(_gameOverScene==Nil)
+    {
+        //Creating endGame menu (View)
+        _gameOverMenu = [[GameOverMenuViewController alloc]initWithNibName:@"GameOverMenuViewController" bundle:nil];
+        _gameOverMenu.delegate = self;
+        
+        //Creating endGame Scene (SpritKit scene)
+        _gameOverScene = [[GameOverScene alloc] initWithSize:CGSizeMake(CGRectGetMaxX(self.frame), CGRectGetMaxY(self.frame)) ];
     
-    //SKView *spriteView = (SKView *) self.view;
+        //Winning sprite
+        SKSpriteNode * crown = [SKSpriteNode spriteNodeWithImageNamed:@"crown.png"];
+        crown.name = @"crown";
+        
+        //Losing sprite
+        SKSpriteNode * box = [SKSpriteNode spriteNodeWithImageNamed:@"box.png"];
+        box.name = @"box";
+        
+        
+        [_gameOverScene addChild:crown];
+        [_gameOverScene addChild:box];
+        
+        SKTransition* transitionDoorsCloseVertical =  [SKTransition doorsCloseHorizontalWithDuration:2];
+        transitionDoorsCloseVertical.pausesOutgoingScene = true;
     
+        [self.scene.view presentScene:_gameOverScene transition:transitionDoorsCloseVertical];
+        [_gameOverScene setScoresForMenuPlayer1:player1.getHealth player2:player2.getHealth];
+        [_gameOverScene.view addSubview:_gameOverMenu.view];
+        
+        if(winningPlayer==2)
+        {
+            box.position = CGPointMake(384, 784);
+            box.zRotation = M_PI ; //Rotating image
+            crown.position = CGPointMake(384, 242);
+            
+            _gameOverMenu.p1Message.text=@"YOU WIN!";
+            _gameOverMenu.p1Message.textColor = [UIColor yellowColor];
+            _gameOverMenu.p2Message.text=@"YOU LOSE!";
+            _gameOverMenu.p2Message.textColor = [UIColor redColor];
+        }
+        else
+        {
+            box.position = CGPointMake(384, 242);
+            crown.position = CGPointMake(384, 784);
+            crown.zRotation = M_PI; //Rotating image
+            
+            _gameOverMenu.p1Message.text=@"YOU LOSE!";
+            _gameOverMenu.p1Message.textColor = [UIColor redColor];
+            _gameOverMenu.p2Message.text=@"YOU WIN!";
+            _gameOverMenu.p2Message.textColor = [UIColor yellowColor];
+        }
+        
+   
+        //Setting labels in menu to the score of each player
+        _gameOverMenu.p1Score.text =[NSString stringWithFormat:@"%i - %i", player1.getHealth,player2.getHealth];
+        _gameOverMenu.p2Score.text =[NSString stringWithFormat:@"%i - %i", player1.getHealth,player2.getHealth];
+    }
     
-//    SKTransition *reveal = [SKTransition revealWithDirection:SKTransitionDirectionDown duration:1.0];
-//    MyScene *newScene = [[MyScene alloc] initWithSize: CGSizeMake(1024,768)];
-//    //  Optionally, insert code to configure the new scene.
-//    [self.scene.view presentScene: newScene transition: reveal];
+}
+
+-(void)restartGame
+{
+    [self.scene removeAllChildren];
     
+    SKTransition* doorsOpenHorizontalWithDuration =  [SKTransition doorsOpenHorizontalWithDuration:1];
+    doorsOpenHorizontalWithDuration.pausesOutgoingScene = true;
+    
+    self.contentCreated = NO;   //Recreate the game scene
+    
+    [self initWithSize:self.size andAudio:AudioPlayer];
+    [_gameOverScene.view presentScene:self.scene transition:doorsOpenHorizontalWithDuration];
+    //[AudioPlayer rewindBeat];
+    _gameOverScene=Nil;
 }
 @end

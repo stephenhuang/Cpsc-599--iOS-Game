@@ -38,6 +38,10 @@
                                            CGRectGetMidY(self.frame));
             
             [self addChild:myLabel];
+            
+            //[self.scene.view addSubview:<#(UIView *)#>];
+            //New code from menu
+            
         });
         
 
@@ -48,6 +52,7 @@
 
 //Transition to the new screen
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    printf("W = %f      H = %f",self.size.width,self.size.height);
     SKScene *gameScene = [[Gameplay alloc] initWithSize:self.size andAudio:audioplayer];
     SKTransition *doors = [SKTransition doorsOpenHorizontalWithDuration:(0.5)];
     [self.view presentScene:gameScene transition:doors];

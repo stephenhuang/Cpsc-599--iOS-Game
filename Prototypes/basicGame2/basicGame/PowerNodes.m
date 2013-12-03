@@ -40,8 +40,8 @@
 
     //Selection of PowerUp Type
 -(void)pickType{
-    float selection= arc4random_uniform(75)+3;
-
+    float selection= arc4random_uniform(150)+3;
+    //selection=998;
     //Health Up
     if (selection < 35) {
         //if = 1 + 5
@@ -60,6 +60,11 @@
     else if (selection < 99){
         _powerupIcon= @"battle.png";
         _powerType = @"battle";
+        _iconSize =0.4;
+    }
+    else if (selection < 150){
+        _powerupIcon= @"misslePowerUp.png";
+        _powerType = @"missle";
         _iconSize =0.4;
     }
     else{

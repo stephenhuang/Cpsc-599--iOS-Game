@@ -12,18 +12,30 @@
 
 @interface AudioManager : NSObject{
     AVAudioPlayer* myAudioPlayer;
+    AVAudioPlayer* myAudioPlayerBattle;
     SKAction* healthUpBeat;
     SKAction* healthDownBeat;
+    SKAction* loseBeat;
     SKAction* hitBeat;
     SKAction* battleModeBeat;
     SKAction* playerHitBeat;
+  
     
 }
 -(id)init;
-
+-(void) volumeFadeInBattle;
+-(void) playBattleBeat;
+-(void) pauseBattleBeat;
+-(void) volumeFadeBattle;
 -(void) playBaseBeat;
--(void) pauseBaseBeat;
+-(void) playFadeBaseBeat;
+-(void) stopBaseBeat;
+-(void)rewindBeat;
+-(void) volumeFade;
+-(void) volumeFadeIn;
 -(SKAction*)getHealthUpBeat;
 -(SKAction*)gethealthDownBeat;
 -(SKAction *)getPlayerHitBeat;
+-(SKAction *)getloseBeat;
+
 @end

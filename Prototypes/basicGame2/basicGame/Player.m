@@ -26,7 +26,6 @@
 {
     self = [super initWithImageNamed:imageName];
     
-    
     if (self) {
         _playerNumber = playerNumber;
         _startingPosition = startingPosition;

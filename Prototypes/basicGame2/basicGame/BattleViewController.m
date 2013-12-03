@@ -9,27 +9,37 @@
 #import "BattleViewController.h"
 #import "mathTrivaGenerator.h"
 #import "otherTrivaGenerator.h"
-
-UIFont *railwayBig;
-UIFont *railway;
-UIFont *railwayQuestion;
-NSString *answer;
+#import "AudioManager.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface BattleViewController ()
 
 @end
 
 @implementation BattleViewController
+{
+    NSMutableArray *question;
+    UIFont *railwayBig;
+    UIFont *railway;
+    UIFont *railwayQuestion;
+    NSString *answer;
+    int playerThatWins;
+    
+}
 
 @synthesize questionLabel,questionLabel2,battleLabel2,battleLabel1; //all Labels
 @synthesize p1Option1,p1Option2,p1Option3,p1Option4;    //player 1 buttons
 @synthesize p2Option1,p2Option2,p2Option3,p2Option4;    //player 2 buttons
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andAudio:(AudioManager*) audio
 {
+    
+    
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        //Initialize audio player
+        AudioPlayer = audio;
     }
     
     railwayBig = [UIFont fontWithName:@"Raleway" size:65];
@@ -40,16 +50,18 @@ NSString *answer;
 
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
+    
+    
     // Do any additional setup after loading the view from its nib.
     
     //Question
-    NSMutableArray *question;
     int whatTriva = ((rand() %100)+1);
     
-    if(whatTriva>=999 )
+    if(whatTriva<50)
     {
-        mathTrivaGenerator *triva = [[mathTrivaGenerator alloc] init];
+        mathTrivaGenerator* triva = [[mathTrivaGenerator alloc] init];
         question =triva.createQuestion;
     }
     else
@@ -128,6 +140,10 @@ NSString *answer;
     
     //this is a test
     printf("View Loaded\n");
+    
+    [AudioPlayer volumeFade];
+    [AudioPlayer playBattleBeat];
+    [AudioPlayer volumeFadeInBattle];
 }
 
 - (void)didReceiveMemoryWarning
@@ -140,17 +156,21 @@ NSString *answer;
     if([sender currentTitle]==answer)
     {
         [self p1Wins];
+        
     }
     else
         [self p2Wins];
+    
 }
 - (IBAction)p2ButtonPress:(id)sender {
     if([sender currentTitle]==answer)
     {
         [self p2Wins];
+        
     }
     else
         [self p1Wins];
+    
 }
 
 -(void)p1Wins
@@ -168,7 +188,13 @@ NSString *answer;
     [p2Option4 setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     questionLabel2.textColor = [UIColor redColor];
     
+    playerThatWins=1;
     [self fadeOutAndRemove];
+    [self performSelector:@selector(notifyGameOfWinner:) withObject:Nil afterDelay:1.6];
+    
+    [AudioPlayer volumeFadeBattle];
+    [AudioPlayer playFadeBaseBeat];
+    [AudioPlayer volumeFadeIn];
     }
 
 -(void)p2Wins
@@ -186,8 +212,14 @@ NSString *answer;
     [p2Option4 setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
     questionLabel2.textColor = [UIColor greenColor];
     
-    [self performSelector:@selector(fadeOutAndRemove) withObject:Nil afterDelay:2];
-    //[self fadeOutAndRemove];
+    playerThatWins=2;
+    [self fadeOutAndRemove];
+    [self performSelector:@selector(notifyGameOfWinner:) withObject:Nil afterDelay:1.6];
+    
+    [AudioPlayer volumeFadeBattle];
+    [AudioPlayer playFadeBaseBeat];
+    [AudioPlayer volumeFadeIn];
+
 }
 
 
@@ -203,9 +235,10 @@ NSString *answer;
     p2Option3.enabled = NO;
     p2Option4.enabled = NO;
 }
--(void)removeView:(UIView*) current
+-(void)notifyGameOfWinner:(UIView*) current
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.delegate playerThatWins:playerThatWins];
+    [self.view removeFromSuperview];
 }
 
 -(void)fadeOutAndRemove
@@ -216,6 +249,8 @@ NSString *answer;
         
     }];
     
-    [self removeFromParentViewController];
+    
+    //[self removeFromParentViewController];    //Doesn't actually remove from View!
+    
 }
 @end

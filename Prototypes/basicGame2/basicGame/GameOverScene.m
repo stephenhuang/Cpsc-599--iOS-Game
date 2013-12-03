@@ -15,36 +15,40 @@ NSString* finalscores;
 GameOverMenuViewController *gameOverMenu;
 
 @implementation GameOverScene
--(id)initWithSize:(CGSize)size {
+-(id)initWithSize:(CGSize)size{
     if (self = [super initWithSize:size]) {
-        /* Setup your scene here */
-        NSLog(@"initializing");
-        
-        finalscores = @"";
-        self.backgroundColor = [UIColor colorWithRed:113/255.0f green:209/255.0f blue:236/255.0f alpha:1.0f];
-        
-        gameOverMenu = [[GameOverMenuViewController alloc]initWithNibName:@"GameOverMenuViewController" bundle:nil];
-        
-        //[self.view addSubview:gameOverMenu.view];
-        
-        UIWindow* mainWindow = [[UIApplication sharedApplication] keyWindow];
-        [mainWindow addSubview: gameOverMenu.view];
-    
+        /* Setup your scene here */        
     }
-    return self;
+    //finalscores = [NSString stringWithFormat:@"%i - %i", p1score,p2score];
+    finalscores = @"";
     
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    CGSize screenSize = screenBound.size;
+     SKSpriteNode *background = [SKSpriteNode spriteNodeWithColor:[UIColor colorWithRed:113/255.0f green:209/255.0f blue:236/255.0f alpha:1.0f]
+     size:screenSize];
+     background.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+     [self addChild:background];
+    
+    //gameOverMenu = [[GameOverMenuViewController alloc]initWithNibName:@"GameOverMenuViewController" bundle:nil];
+    //gameOverMenu.delegate = self;
+    return self;
 }
 
-- (void)setScoresForMenu:(int)p1:(int)p2
+- (void)setScoresForMenuPlayer1:(int)p1 player2:(int)p2
 {
+    //Remove this later
     finalscores = [NSString stringWithFormat:@"%i - %i", p1,p2];
+    //[gameOverMenu setScoresForMenu:finalscores];
     
 }
 
 - (void)didMoveToView:(SKView *)view
 {
-    NSLog(@"@HOORRRAAAAY %d", count);
-    count++;
+    //gameOverMenu = [[GameOverMenuViewController alloc]initWithNibName:@"GameOverMenuViewController" bundle:nil];
+    
+    //[self.view addSubview:gameOverMenu.view];
+    
+    //[view addSubview:gameOverMenu.view];
     
 }
 

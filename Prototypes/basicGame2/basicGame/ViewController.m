@@ -8,19 +8,19 @@
 
 #import "ViewController.h"
 #import "MyScene.h"
+#import "Menu.h"
 
 @implementation ViewController
 
 - (void)viewDidLoad
 {
-   [self.view setMultipleTouchEnabled:YES];
     [super viewWillLayoutSubviews];
     
     // Configure the view.
     SKView * skView = (SKView *)self.view;
     if (!skView.scene) {
-        skView.showsFPS = NO;
-        skView.showsNodeCount = NO;
+        skView.showsFPS = YES;
+        skView.showsNodeCount = YES;
         
         // Create and configure the scene.
         SKScene * scene = [MyScene sceneWithSize:skView.bounds.size];
@@ -28,9 +28,7 @@
         
         // Present the scene.
         [skView presentScene:scene];
-        
     }
-
 }
 
 - (BOOL)shouldAutorotate

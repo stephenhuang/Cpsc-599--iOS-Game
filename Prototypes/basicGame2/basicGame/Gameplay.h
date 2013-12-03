@@ -16,7 +16,10 @@
 #import "GameTimer.h"
 #import "GameOverScene.h"
 
-@interface Gameplay : SKScene{
+#import "GameOverMenuViewController.h"
+#import "BattleViewController.h"
+
+@interface Gameplay : SKScene <BattleDelegateProtocol,GameOverMenuProtocol> {
     @public
     
             AudioManager *AudioPlayer;
@@ -25,4 +28,5 @@
 }
 @property BOOL contentCreated;
 -(id)initWithSize:(CGSize)size andAudio:(AudioManager*) audio;
+-(void) addToCollisionGroup: (SKSpriteNode*) Node : (NSString*) group;
 @end

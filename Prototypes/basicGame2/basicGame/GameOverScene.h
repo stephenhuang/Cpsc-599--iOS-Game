@@ -10,4 +10,6 @@
 
 @interface GameOverScene : SKScene
 
+- (void)setScoresForMenuPlayer1:(int)p1 player2:(int)p2;
+
 @end

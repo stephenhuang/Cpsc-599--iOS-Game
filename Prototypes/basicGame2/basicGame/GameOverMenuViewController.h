@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol GameOverMenuProtocol
 
+-(void)restartGame;
+
+@end
 @interface GameOverMenuViewController : UIViewController
 
 //Buttons
@@ -17,7 +21,17 @@
 //Labels
 @property (weak, nonatomic) IBOutlet UILabel *p1Score;
 @property (weak, nonatomic) IBOutlet UILabel *p2Score;
+@property (weak, nonatomic) IBOutlet UILabel *p1Message;
+@property (weak, nonatomic) IBOutlet UILabel *p2Message;
 
-- (void)setScoresForMenu:(int)p1score:(int)p2score;
+//Actions
+- (IBAction)replayGame:(id)sender;
+
+
+//Public
+- (void)setScoresForMenu:(NSString *)score;
+
+//Menu Opitons Delegate
+@property id <GameOverMenuProtocol> delegate;
 
 @end
