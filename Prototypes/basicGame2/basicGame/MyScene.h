@@ -7,9 +7,14 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
+#import <AVFoundation/AVFoundation.h>
+#import "AudioManager.h"
+#include <AudioToolbox/AudioToolbox.h>
 
-@interface MyScene : SKScene
 
-- (void)sayThis:(NSString*)text;
+@interface MyScene : SKScene {
+        AVAudioPlayer* myAudioPlayer;
+        AudioManager *audioplayer;
+}
 
 @end

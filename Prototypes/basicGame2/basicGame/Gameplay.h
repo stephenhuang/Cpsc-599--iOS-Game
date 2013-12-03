@@ -9,7 +9,20 @@
 #import <SpriteKit/SpriteKit.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface Gameplay : SKScene
-@property BOOL contentCreated;
+#import "MyScene.h"
+#import "Player.h"
+#import "PowerNodes.h"
+#import "AppDelegate.h"
+#import "GameTimer.h"
+#import "GameOverScene.h"
 
+@interface Gameplay : SKScene{
+    @public
+    
+            AudioManager *AudioPlayer;
+    
+    @private
+}
+@property BOOL contentCreated;
+-(id)initWithSize:(CGSize)size andAudio:(AudioManager*) audio;
 @end

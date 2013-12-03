@@ -13,13 +13,14 @@
 
 - (void)viewDidLoad
 {
+   [self.view setMultipleTouchEnabled:YES];
     [super viewWillLayoutSubviews];
     
     // Configure the view.
     SKView * skView = (SKView *)self.view;
     if (!skView.scene) {
-        skView.showsFPS = YES;
-        skView.showsNodeCount = YES;
+        skView.showsFPS = NO;
+        skView.showsNodeCount = NO;
         
         // Create and configure the scene.
         SKScene * scene = [MyScene sceneWithSize:skView.bounds.size];
@@ -27,7 +28,9 @@
         
         // Present the scene.
         [skView presentScene:scene];
+        
     }
+
 }
 
 - (BOOL)shouldAutorotate

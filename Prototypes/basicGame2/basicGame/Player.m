@@ -26,12 +26,17 @@
 {
     self = [super initWithImageNamed:imageName];
     
+    
     if (self) {
         _playerNumber = playerNumber;
         _startingPosition = startingPosition;
         _score = 100;
         _y= 0;
         self.position = startingPosition;
+        
+        self.xScale= 0.3;
+        self.yScale= 0.3;
+
         
         //Add Physics
         self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:self.size];
