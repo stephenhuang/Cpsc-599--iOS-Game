@@ -827,10 +827,13 @@ bool isPaused = false;
 
 -(void)pauseGame
 {
+    
+
     SKView *spriteView = (SKView *) self.view;
     
     if(!spriteView.paused)
     {
+        [self blurScene];
         isPaused=true;
         spriteView.paused=YES;
         
@@ -899,7 +902,26 @@ bool isPaused = false;
     }
         [self addChild:enemyNode];
 }
-
+-(void)blurScene{
+    //    self.shouldEnableEffects = YES;
+    //    self.filter = [self blurFilter];
+    
+    
+    self.scene.shouldEnableEffects = YES;
+    self.scene.filter = [self blurFilter];
+    
+    
+    //self.scene.blendMode = SKBlendModeMultiply;
+    
+    
+}
+- (CIFilter *)blurFilter
+{
+    CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"]; // 3
+    [filter setDefaults];
+    [filter setValue:[NSNumber numberWithFloat:10] forKey:@"inputRadius"];
+    return filter;
+}
 
 /*
  
