@@ -24,6 +24,7 @@
     UIFont *railwayQuestion;
     NSString *answer;
     int playerThatWins;
+    BOOL buttonTouched;
     
 }
 
@@ -53,13 +54,13 @@
     
     [super viewDidLoad];
     
-    
+    buttonTouched=false;
     // Do any additional setup after loading the view from its nib.
     
     //Question
     int whatTriva = ((rand() %100)+1);
-    
-    if(whatTriva<50)
+
+    if(whatTriva<64)
     {
         mathTrivaGenerator* triva = [[mathTrivaGenerator alloc] init];
         question =triva.createQuestion;
@@ -153,23 +154,33 @@
 }
 
 - (IBAction)p1ButtonPress:(id)sender {
-    if([sender currentTitle]==answer)
+    if(!buttonTouched)
+    {
+        buttonTouched=true;
+    [self disableAllButtons];
+    if([[sender currentTitle]isEqualToString:answer])
     {
         [self p1Wins];
         
     }
     else
         [self p2Wins];
+    }
     
 }
 - (IBAction)p2ButtonPress:(id)sender {
-    if([sender currentTitle]==answer)
+    if(!buttonTouched)
+    {
+        buttonTouched=true;
+    [self disableAllButtons];
+    if([[sender currentTitle]isEqualToString:answer])
     {
         [self p2Wins];
         
     }
     else
         [self p1Wins];
+    }
     
 }
 

@@ -9,12 +9,14 @@
 #import "mathTrivaGenerator.h"
 
 @interface mathTrivaGenerator()
+{
+    int answer,num1,num2,num3;
+}
 
 @end
 
 @implementation mathTrivaGenerator
 
-int answer,num1,num2,num3;
 
 -(NSMutableArray*)createQuestion
 {
@@ -93,9 +95,9 @@ int answer,num1,num2,num3;
 
 -(NSMutableArray*)randomizeAnswers:(NSMutableArray*) question{
 
-//    for (int i=2; i<6; i++) {
-//        [question exchangeObjectAtIndex:i withObjectAtIndex:(rand()%3)+2];  //Replace i with any
-//    }
+    for (int i=2; i<6; i++) {
+        [question exchangeObjectAtIndex:i withObjectAtIndex:(rand()%3)+2];  //Replace i with any
+    }
     return question;
 }
 

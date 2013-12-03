@@ -23,7 +23,7 @@
 {
     if([self hasMissiles])
     {
-        numOfMissiles =numOfMissiles+3;
+        numOfMissiles =numOfMissiles+5;
     }
     else
     {
@@ -53,7 +53,7 @@
             missilesLeft.zRotation=M_PI;
         }
         
-        numOfMissiles=3;
+        numOfMissiles=5;
         
         [game addChild:shoot];
     

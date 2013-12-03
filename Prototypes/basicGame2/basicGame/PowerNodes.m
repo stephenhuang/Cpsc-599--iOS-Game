@@ -33,7 +33,8 @@
     self.physicsBody.affectedByGravity = NO;
     self.physicsBody.linearDamping = 0.0;
     self.physicsBody.angularDamping = 0.0;
-    self.physicsBody.velocity = CGVectorMake(0,-100);
+    [self setVelocity];
+
     return self;
 }
 
@@ -73,11 +74,42 @@
         _powerType = @"sendAllNodes";
         _iconSize =0.4;
     }
+//    _powerupIcon= @"battle.png";
+//    _powerType = @"battle";
+//    _iconSize =0.4;
 }
 
+-(void)setVelocity{
+    float vx;
+    float vy;
+    if (_startingPosition.x < 384){
+        vx = -30;
+    }
+    else{
+        vx = 30;
+    }
+    if (_startingPosition.y < 512){
+        vy = 30;
+    }
+    else{
+        vy = -30;
+    }
+        
+    self.physicsBody.velocity = CGVectorMake(vx,vy);
+}
 -(void)pickPosition{
-    float randX = arc4random_uniform(768) + 5;
-    float randY = arc4random_uniform(768) + 5;
+
+    
+    float randY;
+    do {
+       randY = arc4random_uniform(1024);
+    } while (randY > 256 && randY < 768);
+    
+    float randX;
+    do {
+        randX = arc4random_uniform(768);
+    } while (randX > 700 && randX < 75 );
+    
 
     _startingPosition = CGPointMake(randX, randY);
 }

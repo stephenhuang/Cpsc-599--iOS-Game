@@ -63,7 +63,8 @@ int healthAmount = 0;
 //float boulderVelocity = 200;
 float boulderVelocity = 800;
 
-int bpm = 800;
+int bpm = 130;
+float pulseDelay;
 float boulderCreationDelay;
 
 float imageRand = 0;
@@ -117,6 +118,8 @@ bool isPaused = false;
         
         //Music Matching
         boulderCreationDelay = [self setBoulderCreationDelay];
+        pulseDelay = 60.0*2.0/(bpm);
+        printf("pulse: %f", pulseDelay);
         
         _touchToNodeLookup = [NSMapTable weakToWeakObjectsMapTable];
         
@@ -168,15 +171,17 @@ bool isPaused = false;
     [self createHuds];
     
     //Music
+    //[self createPulse];
+    [self performSelector:@selector(createPulse) withObject:nil afterDelay:0.8];
     [self startMusic];
     
     //Enemy Nodes
     _enemyOpacityRatio = 1.7;
     [self performSelector:@selector(createEnemyNodes:) withObject:([NSNumber numberWithInt:1]) afterDelay:0.0];
-    [self createPulse];
+
     
     //PowerNodes
-    [self createPowerNodes];
+    [self performSelector:@selector(createPowerNodes) withObject:nil afterDelay:1.0];
     
     
 }
@@ -326,7 +331,7 @@ bool isPaused = false;
     [self addToCollisionGroup:powerNode: @"powerNode"];
     [self addChild:powerNode];
     if (!_gameOver && !isPaused){
-        [self performSelector:@selector(createPowerNodes) withObject:nil afterDelay:10];
+        [self performSelector:@selector(createPowerNodes) withObject:nil afterDelay:5];
     }
 }
 
@@ -403,21 +408,24 @@ bool isPaused = false;
 -(void)createPulse{
     
     CGPoint startPoint = CGPointMake(CGRectGetMinX(self.frame)+100, CGRectGetMidY(self.frame));
-    SKSpriteNode *pulseBoulder = [SKSpriteNode spriteNodeWithImageNamed:@"dodgeItem.png"];
-    pulseBoulder.position = CGPointMake(startPoint.x, startPoint.y);
-    pulseBoulder.name = @"enemyNode";
-    pulseBoulder.color = [SKColor colorWithRed:(rand()*2) green:(rand()*2) blue:(rand()*2) alpha:1];
-    [self addChild:pulseBoulder];       //adding to background
+    //SKSpriteNode *pulseBoulder = [SKSpriteNode spriteNodeWithImageNamed:@"dodgeItem.png"];
+    //pulseBoulder.position = CGPointMake(startPoint.x, startPoint.y);
+    //pulseBoulder.name = @"enemyNode";
+    //pulseBoulder.color = [SKColor colorWithRed:(rand()*2) green:(rand()*2) blue:(rand()*2) alpha:1];
+    //[self addChild:pulseBoulder];       //adding to background
+    
     //PULSE CODE
-    SKAction *delay = [SKAction waitForDuration:(boulderCreationDelay-0.2)];
+    SKAction *delay = [SKAction waitForDuration:(pulseDelay-0.2)];
     SKAction *grow = [SKAction scaleBy: 1.4 duration:0.1];
     SKAction *shrink = [SKAction scaleBy:0.7142857  duration:0.1];
     SKAction *pulse = [SKAction sequence:@[grow, shrink,delay]];
     //SKAction *pulse = [SKAction sequence:@[grow]];
     SKAction* pulseLoop = [SKAction repeatActionForever: pulse];
     
-    [pulseBoulder runAction:pulseLoop];
-    
+    [player1Score runAction:pulseLoop];
+    [player2Score runAction:pulseLoop];
+    [player1Score runAction:pulseLoop];
+    [player2Score runAction:pulseLoop];
 }
 
 
@@ -534,9 +542,9 @@ bool isPaused = false;
 }
 
 
--(void) updateScore: (SKLabelNode*) label : (int) score
+-(void) updateScore: (SKLabelNode*) label : (int) score playerNum:(int) player
 {
-    NSString *countString = [NSString stringWithFormat:@"Player 1: %i", score];
+    NSString *countString = [NSString stringWithFormat:@"Player %i: %i",player, score];
     [label setText: countString];
     
 }
@@ -576,8 +584,9 @@ bool isPaused = false;
         if (!_powerupActive){
             [self runAction:[AudioPlayer getPlayerHitBeat]];
             [secondBody.node removeFromParent];      //removing node from parent if collided
-            [player1 decreaseHealth:50];   //Robert
-            [self updateScore:player1Score: player1.getHealth];
+            [player1 decreaseHealth:5];   //Robert
+            [self updateScore:player1Score: player1.getHealth playerNum:1];
+            
          }
         else{
             //Some powerup is active. Everything is different
@@ -592,8 +601,9 @@ bool isPaused = false;
         [self runAction:[AudioPlayer getPlayerHitBeat]];
         [secondBody.node removeFromParent];
         
-        //[player2 decreaseHealth:5];
-        [self updateScore:player2Score: player2.getHealth];
+        [player2 decreaseHealth:5];
+        //[self updateScore:player2Score: player2.getHealth];
+        [self updateScore:player2Score :player2.getHealth playerNum:2];
         }
      }
     
@@ -616,13 +626,34 @@ bool isPaused = false;
     if ([powerType isEqualToString:@"healthUp"])
     {
         [self runAction:[AudioPlayer getHealthUpBeat]];
+        if([firstBody.node.name  isEqual:@"player1"])
+        {
+            [player1 increaseHealth:5];
+            [self updateScore:player1Score: player1.getHealth playerNum:1];
+        }
+        else if([firstBody.node.name  isEqual:@"player2"])
+        {
+            [player2 increaseHealth:5];
+            [self updateScore:player2Score: player2.getHealth playerNum:2];
+        }
     }
     else if ([powerType isEqualToString:@"healthDown"])
     {
         [self runAction:[AudioPlayer gethealthDownBeat]];
+        if([firstBody.node.name  isEqual:@"player1"])
+        {
+            [player2 increaseHealth:-5];
+            [self updateScore:player2Score: player2.getHealth playerNum:2];
+        }
+        else if([firstBody.node.name  isEqual:@"player2"])
+        {
+            [player1 increaseHealth:-5];
+            [self updateScore:player1Score: player1.getHealth playerNum:1];
+        }
     }
     else if ([powerType isEqualToString:@"battle"])
     {
+       
         [self pauseGame];
         [self createBattle];
     }
@@ -684,7 +715,7 @@ bool isPaused = false;
                 NSLog(@"d: %f",d);
                 NSLog(@"f: %f",a);
                 NSLog(@"\n");
-                //a = 10;
+                a = 20;
                 CGVector force = CGVectorMake(0, a);
                 //[enemyNode.physicsBody applyForce:force];
                 [enemyNode.physicsBody applyImpulse:force];
@@ -698,10 +729,10 @@ bool isPaused = false;
                 [enemyNode runAction: sendAllNodes];
            }];
         }
-        
         [secondBody.node removeFromParent];
         [player1 increaseHealth:healthAmount];
-        [self updateScore:player1Score: player1.getHealth];
+        [self updateScore:player1Score: player1.getHealth playerNum:1];
+        
     }
     
     
@@ -765,6 +796,9 @@ bool isPaused = false;
         {
             [p1Missile shotMissle];
             [self shootMissile:1];
+            SKAction * missile = [SKAction playSoundFileNamed:@"lazer.wav" waitForCompletion:NO];
+            [self runAction:(missile)];
+            
             
             if(![p1Missile hasMissiles])
                 [p1Missile removeMissileHud];
@@ -776,6 +810,8 @@ bool isPaused = false;
         {
             [p2Missile shotMissle];
             [self shootMissile:2];
+            SKAction * missile = [SKAction playSoundFileNamed:@"lazer.wav" waitForCompletion:NO];
+            [self runAction:(missile)];
             
             if(![p2Missile hasMissiles])
                 [p2Missile removeMissileHud];
@@ -793,15 +829,15 @@ bool isPaused = false;
     {
         [player1 increaseHealth:5];
         [player2 decreaseHealth:5];
-        [self updateScore:player1Score: player1.getHealth];
-        [self updateScore:player2Score: player2.getHealth];
+        [self updateScore:player1Score: player1.getHealth playerNum:1];
+        [self updateScore:player2Score: player2.getHealth playerNum:2];
     }
     else
     {
         [player2 increaseHealth:5];
         [player1 decreaseHealth:5];
-        [self updateScore:player1Score: player1.getHealth];
-        [self updateScore:player2Score: player2.getHealth];
+        [self updateScore:player1Score: player1.getHealth playerNum:1];
+        [self updateScore:player2Score: player2.getHealth playerNum:2];
     }
     [self pauseGame];   //Will figure out if paused or unpaused and act accordingly
 }
@@ -837,18 +873,10 @@ bool isPaused = false;
         isPaused=true;
         spriteView.paused=YES;
         
-        
-        //SKLabelNode labelNodeWithFontNamed:@"player1Score"];
-        SKEffectNode * effect = [SKEffectNode node];
-        effect.filter =[CIFilter filterWithName:@"CIGaussianBlur"];    //was CIGaussianBlur
-        //effect.shouldEnableEffects = YES;
-
-        //[effect addChild:player1Score];
-        //[self addChild:effect];
-    
     }
     else
     {
+        [self unblurScene];
         //Unpausing
         isPaused=false;
         spriteView.paused=NO;
@@ -903,16 +931,12 @@ bool isPaused = false;
         [self addChild:enemyNode];
 }
 -(void)blurScene{
-    //    self.shouldEnableEffects = YES;
-    //    self.filter = [self blurFilter];
-    
-    
     self.scene.shouldEnableEffects = YES;
     self.scene.filter = [self blurFilter];
-    
-    
-    //self.scene.blendMode = SKBlendModeMultiply;
-    
+}
+-(void)unblurScene{
+    self.scene.shouldEnableEffects = YES;
+    self.scene.filter = [self blurFilter2];
     
 }
 - (CIFilter *)blurFilter
@@ -922,7 +946,13 @@ bool isPaused = false;
     [filter setValue:[NSNumber numberWithFloat:10] forKey:@"inputRadius"];
     return filter;
 }
-
+- (CIFilter *)blurFilter2
+{
+    CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"]; // 3
+    [filter setDefaults];
+    [filter setValue:[NSNumber numberWithFloat:0] forKey:@"inputRadius"];
+    return filter;
+}
 /*
  
  ======================= 5. MOVEMENT METHODS ===========================
@@ -989,7 +1019,7 @@ float degToRad(float degree) {
       _gameOver = true;
 
     [AudioPlayer volumeFade];
-    [self runAction:[AudioPlayer getloseBeat]];
+    //[self runAction:[AudioPlayer getloseBeat]];
     [AudioPlayer stopBaseBeat];
     
     if(_gameOverScene==Nil)
@@ -1046,7 +1076,7 @@ float degToRad(float degree) {
    
         //Setting labels in menu to the score of each player
         _gameOverMenu.p1Score.text =[NSString stringWithFormat:@"%i - %i", player1.getHealth,player2.getHealth];
-        _gameOverMenu.p2Score.text =[NSString stringWithFormat:@"%i - %i", player1.getHealth,player2.getHealth];
+        _gameOverMenu.p2Score.text =[NSString stringWithFormat:@"%i - %i", player2.getHealth,player1.getHealth];
     }
     
 }

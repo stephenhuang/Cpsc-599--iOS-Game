@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3700C8D3181AED6E0065EA17"
-               BuildableName = "basicGame.app"
-               BlueprintName = "basicGame"
-               ReferencedContainer = "container:basicGame.xcodeproj">
+               BuildableName = "Scrubbles.app"
+               BlueprintName = "Scrubbles"
+               ReferencedContainer = "container:Scrubbles.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3700C8FB181AED6E0065EA17"
-               BuildableName = "basicGameTests.xctest"
-               BlueprintName = "basicGameTests"
-               ReferencedContainer = "container:basicGame.xcodeproj">
+               BuildableName = "ScrubblesTests.xctest"
+               BlueprintName = "ScrubblesTests"
+               ReferencedContainer = "container:Scrubbles.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3700C8D3181AED6E0065EA17"
-            BuildableName = "basicGame.app"
-            BlueprintName = "basicGame"
-            ReferencedContainer = "container:basicGame.xcodeproj">
+            BuildableName = "Scrubbles.app"
+            BlueprintName = "Scrubbles"
+            ReferencedContainer = "container:Scrubbles.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3700C8D3181AED6E0065EA17"
-            BuildableName = "basicGame.app"
-            BlueprintName = "basicGame"
-            ReferencedContainer = "container:basicGame.xcodeproj">
+            BuildableName = "Scrubbles.app"
+            BlueprintName = "Scrubbles"
+            ReferencedContainer = "container:Scrubbles.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -80,9 +80,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3700C8D3181AED6E0065EA17"
-            BuildableName = "basicGame.app"
-            BlueprintName = "basicGame"
-            ReferencedContainer = "container:basicGame.xcodeproj">
+            BuildableName = "Scrubbles.app"
+            BlueprintName = "Scrubbles"
+            ReferencedContainer = "container:Scrubbles.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

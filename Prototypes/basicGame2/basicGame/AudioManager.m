@@ -45,7 +45,7 @@
 
 -(void) volumeFadeInBattle
 {
-	printf("volumeBattle= %f", myAudioPlayerBattle.volume);
+	//printf("volumeBattle= %f", myAudioPlayerBattle.volume);
     if (myAudioPlayerBattle.volume < 1)
     {
         myAudioPlayerBattle.volume = myAudioPlayerBattle.volume + 0.1;
@@ -126,7 +126,7 @@
 
 -(void) volumeFadeIn
 {
-	printf("volume = %f", myAudioPlayer.volume);
+	//printf("volume = %f", myAudioPlayer.volume);
     if (myAudioPlayer.volume < 1)
     {
         myAudioPlayer.volume = myAudioPlayer.volume + 0.1;

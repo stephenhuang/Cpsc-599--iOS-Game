@@ -15,7 +15,7 @@
     
     if (self) {
         _playerNumber = playerNumber;
-        _score = 100;
+        _score = 40;
         _y= 0;
     }
     
