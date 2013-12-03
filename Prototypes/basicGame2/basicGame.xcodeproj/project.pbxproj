@@ -31,7 +31,6 @@
 		3700C8E4181AED6E0065EA17 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3700C8E2181AED6E0065EA17 /* InfoPlist.strings */; };
 		3700C8E6181AED6E0065EA17 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3700C8E5181AED6E0065EA17 /* main.m */; };
 		3700C8EA181AED6E0065EA17 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3700C8E9181AED6E0065EA17 /* AppDelegate.m */; };
-		3700C8ED181AED6E0065EA17 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3700C8EB181AED6E0065EA17 /* Main.storyboard */; };
 		3700C8F0181AED6E0065EA17 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3700C8EF181AED6E0065EA17 /* ViewController.m */; };
 		3700C8F3181AED6E0065EA17 /* MyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3700C8F2181AED6E0065EA17 /* MyScene.m */; };
 		3700C8F5181AED6E0065EA17 /* Spaceship.png in Resources */ = {isa = PBXBuildFile; fileRef = 3700C8F4181AED6E0065EA17 /* Spaceship.png */; };
@@ -69,6 +68,7 @@
 		451CB1EB1830261C0009E7FE /* PowerNodes.m in Sources */ = {isa = PBXBuildFile; fileRef = 451CB1EA1830261C0009E7FE /* PowerNodes.m */; };
 		451CB1F1183044DD0009E7FE /* hit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 451CB1F0183044DD0009E7FE /* hit.mp3 */; };
 		451CB1F3183046650009E7FE /* hit1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 451CB1F2183046650009E7FE /* hit1.mp3 */; };
+		45614B29184D692300411DC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45614B28184D692300411DC3 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,7 +115,6 @@
 		3700C8E7181AED6E0065EA17 /* basicGame-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "basicGame-Prefix.pch"; sourceTree = "<group>"; };
 		3700C8E8181AED6E0065EA17 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3700C8E9181AED6E0065EA17 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		3700C8EC181AED6E0065EA17 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3700C8EE181AED6E0065EA17 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		3700C8EF181AED6E0065EA17 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		3700C8F1181AED6E0065EA17 /* MyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyScene.h; sourceTree = "<group>"; };
@@ -162,6 +161,7 @@
 		451CB1EA1830261C0009E7FE /* PowerNodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerNodes.m; sourceTree = "<group>"; };
 		451CB1F0183044DD0009E7FE /* hit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hit.mp3; sourceTree = "<group>"; };
 		451CB1F2183046650009E7FE /* hit1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hit1.mp3; sourceTree = "<group>"; };
+		45614B28184D692300411DC3 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -301,9 +301,9 @@
 				3750073A184815E9003A63BF /* Menu */,
 				3700C8E8181AED6E0065EA17 /* AppDelegate.h */,
 				3700C8E9181AED6E0065EA17 /* AppDelegate.m */,
-				3700C8EB181AED6E0065EA17 /* Main.storyboard */,
 				3700C8EE181AED6E0065EA17 /* ViewController.h */,
 				3700C8EF181AED6E0065EA17 /* ViewController.m */,
+				45614B28184D692300411DC3 /* Main.storyboard */,
 				3700C8F1181AED6E0065EA17 /* MyScene.h */,
 				3700C8F2181AED6E0065EA17 /* MyScene.m */,
 				378BC8271846732A00D09805 /* GameOverMenuViewController.h */,
@@ -464,6 +464,7 @@
 				02244A2C18400E0300666F30 /* powerup.mp3 in Resources */,
 				02B53B7D1843CF520038A349 /* healthdown.png in Resources */,
 				37630A60184B272400253EF8 /* crown.png in Resources */,
+				45614B29184D692300411DC3 /* Main.storyboard in Resources */,
 				37970D10181F3CF300B75735 /* dodgeItem.png in Resources */,
 				37805CCA1849433100C44454 /* shootbutton.png in Resources */,
 				02B8C88418406D380022FD73 /* playerIcon.png in Resources */,
@@ -487,7 +488,6 @@
 				451CB1F1183044DD0009E7FE /* hit.mp3 in Resources */,
 				02B53B7F1843CF520038A349 /* sendAllNodes.png in Resources */,
 				3750073F184816E8003A63BF /* backgroundMenu.png in Resources */,
-				3700C8ED181AED6E0065EA17 /* Main.storyboard in Resources */,
 				450BDC9C184D3B1B00AAAC17 /* lose.mp3 in Resources */,
 				450BDC9A184D36EA00AAAC17 /* collide.mp3 in Resources */,
 				451CB1F3183046650009E7FE /* hit1.mp3 in Resources */,
@@ -557,14 +557,6 @@
 				3700C8E3181AED6E0065EA17 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		3700C8EB181AED6E0065EA17 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3700C8EC181AED6E0065EA17 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		3700C906181AED6E0065EA17 /* InfoPlist.strings */ = {
