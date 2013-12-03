@@ -18,6 +18,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="Eoq-Hf-D5u"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <segue destination="BV1-FR-VrT" kind="push" identifier="startGame" id="S5E-db-mgq"/>
                     </connections>
@@ -48,8 +50,10 @@
         <!--Navigation Controller-->
         <scene sceneID="oC0-8C-lph">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="y7U-tm-h5y" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="y7U-tm-h5y" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xQu-xx-vRr">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

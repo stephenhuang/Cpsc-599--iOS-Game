@@ -19,13 +19,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "basicGame/ViewController.m"
-            timestampString = "407465881.33863"
+            filePath = "basicGame/Gameplay.m"
+            timestampString = "407648850.238871"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "124"
-            endingLineNumber = "124"
-            landmarkName = "-transitionToGame:"
+            startingLineNumber = "862"
+            endingLineNumber = "862"
+            landmarkName = "-blurScene"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "basicGame/Gameplay.m"
+            timestampString = "407714962.699098"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "875"
+            endingLineNumber = "875"
+            landmarkName = "-blurFilter"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

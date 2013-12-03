@@ -68,6 +68,9 @@
         _powerType = @"sendAllNodes";
         _iconSize =0.4;
     }
+    _powerupIcon= @"sendAllNodes.png";
+    _powerType = @"sendAllNodes";
+    _iconSize =0.4;
 }
 
 -(void)pickPosition{

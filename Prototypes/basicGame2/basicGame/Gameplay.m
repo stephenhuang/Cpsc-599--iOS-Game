@@ -171,6 +171,9 @@ bool isPaused = false;
     [self createPowerNodes];
     
     
+
+    
+    
 }
 
 
@@ -306,6 +309,9 @@ bool isPaused = false;
             [self performSelector:@selector(createEnemyNodes:) withObject:[NSNumber numberWithInt:1] afterDelay:boulderCreationDelay];
         }
     }
+    
+    
+
    
 }
 
@@ -571,7 +577,7 @@ bool isPaused = false;
         if (!_powerupActive){
             [self runAction:[AudioPlayer getPlayerHitBeat]];
             [secondBody.node removeFromParent];      //removing node from parent if collided
-            [player1 decreaseHealth:100];
+            [player1 decreaseHealth:5];
             [self updateScore:player1Score: player1.getHealth];
          }
         else{
@@ -587,7 +593,7 @@ bool isPaused = false;
         [self runAction:[AudioPlayer getPlayerHitBeat]];
         [secondBody.node removeFromParent];
         
-        //[player2 decreaseHealth:5];
+        [player2 decreaseHealth:5];
         [self updateScore:player2Score: player2.getHealth];
         }
      }
@@ -749,6 +755,11 @@ bool isPaused = false;
 
 -(void)pauseGame
 {
+    //REMOVE ME LATER
+    [self blurScene];
+    
+
+
     //Need to pause sound too
     SKView *spriteView = (SKView *) self.view;
     
@@ -846,6 +857,26 @@ float degToRad(float degree) {
  ======================= 6. END OF GAME METHODS ===========================
  
  */
+-(void)blurScene{
+//    self.shouldEnableEffects = YES;
+//    self.filter = [self blurFilter];
+    
+
+    self.scene.shouldEnableEffects = YES;
+    self.scene.filter = [self blurFilter];
+
+
+    //self.scene.blendMode = SKBlendModeMultiply;
+
+    
+}
+- (CIFilter *)blurFilter
+{
+    CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"]; // 3
+    [filter setDefaults];
+    [filter setValue:[NSNumber numberWithFloat:10] forKey:@"inputRadius"];
+    return filter;
+}
 
 -(void)endGame:(int) winningPlayer:(int) p1score:(int) p2score{
       self.view.paused = YES;
